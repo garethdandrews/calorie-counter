@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using backend_api.Domain.Repositories;
 using backend_api.Persistence.Contexts;
+using backend_api.Persistence.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -35,6 +37,12 @@ namespace backend_api
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "backend_api", Version = "v1" });
             });
+
+            services.AddAutoMapper();
+
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IDiaryEntryRepository, DiaryEntryRepository>();
+            services.AddScoped<IFoodItemRepository, FoodItemRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
