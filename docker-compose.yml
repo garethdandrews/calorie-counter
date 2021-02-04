@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+
+  postgres:
+    image: "postgres" # use latest official postgres version
+    env_file:
+      - postgres/database.env # configure postgres
+    volumes:
+      - postgres:/data/postgres # persist data even if container shuts downvolumes:
+    ports:
+      - "5432:5432"
+    networks:
+      - postgres
+    restart: unless-stopped
+    
+  adminer:
+    image: "adminer"
+    ports:
+      - "8090:8080"
+    networks:
+      - postgres
+    restart: on-failure
+      
+      
+ networks:
+   postgres:
+     driver: bridge
+     
+ volumes:
+   postgres:

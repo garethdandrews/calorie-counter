@@ -10,7 +10,7 @@ namespace backend_api.Domain.Models
         public int TotalCalories { get; set; }
         public IList<FoodItem> FoodItems { get; set; } = new List<FoodItem>();
 
-        public User User { get; set; }
         public Diary Diary { get; set; }
+        public User User { get; set; }
     }
 }
