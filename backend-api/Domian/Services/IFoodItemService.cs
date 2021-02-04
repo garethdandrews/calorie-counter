@@ -8,6 +8,6 @@ namespace backend_api.Domain.Services
     public interface IFoodItemService
     {
         Task<IEnumerable<FoodItem>> ListAsync();
-        Task<AddFoodItemResponse> AddFoodItemAsync(int userId, string stringDate, string name, int calories);
+        Task<FoodItemResponse> AddFoodItemAsync(int userId, string stringDate, string name, int calories);
     }
 }
