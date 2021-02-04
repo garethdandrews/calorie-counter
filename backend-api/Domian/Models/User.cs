@@ -8,6 +8,6 @@ namespace backend_api.Domain.Models
         public string Name { get; set; }
         public EGender Gender { get; set; }
         public int CalorieTarget { get; set; }
-        public Diary Diary { get; set; }
+        public IList<DiaryEntry> Diary { get; set; }
     }
 }
