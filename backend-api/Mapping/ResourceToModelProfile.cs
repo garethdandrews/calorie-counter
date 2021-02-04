@@ -8,7 +8,7 @@ namespace backend_api.Mapping
     {
         public ResourceToModelProfile()
         {
-            CreateMap<SaveFoodItemResource, FoodItem>();
+            
         }
     }    
 }

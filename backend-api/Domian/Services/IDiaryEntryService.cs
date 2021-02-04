@@ -8,6 +8,6 @@ namespace backend_api.Domain.Services
     public interface IDiaryEntryService
     {
         Task<IEnumerable<DiaryEntry>> ListAsync();
-        Task<GetDiaryEntryResponse> GetDiaryEntry(string date);
+        Task<GetDiaryEntryResponse> GetDiaryEntry(int userId, string stringDate);
     }
 }

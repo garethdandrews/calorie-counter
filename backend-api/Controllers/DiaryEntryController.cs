@@ -29,13 +29,13 @@ namespace backend_api.Controllers
 
             return resources;
         }
-
+        
         public async Task<IActionResult> GetDiaryEntry([FromBody] GetDiaryEntryResource resource)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState.GetErrorMessages());
 
-            var result = await _diaryEntryService.GetDiaryEntry(resource.StringDate);
+            var result = await _diaryEntryService.GetDiaryEntry(resource.UserId, resource.StringDate);
             
             if (!result.Success)
                 return BadRequest(result.Message);
