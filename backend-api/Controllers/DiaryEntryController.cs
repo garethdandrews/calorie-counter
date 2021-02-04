@@ -27,13 +27,8 @@ namespace backend_api.Controllers
         {
             var diaryEntries = await _diaryEntryService.ListAsync();
             var resources = _mapper.Map<IEnumerable<DiaryEntry>, IEnumerable<DiaryEntryResource>>(diaryEntries);
-        }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAsync()
-        {
-            var diaryEntry = await _diaryEntryService.GetAsync();
+            return resources;
         }
-
     }
 }

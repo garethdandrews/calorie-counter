@@ -1,8 +1,10 @@
 
 using AutoMapper;
 using backend_api.Domain.Repositories;
+using backend_api.Domain.Services;
 using backend_api.Persistence.Contexts;
 using backend_api.Persistence.Repositories;
+using backend_api.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -39,6 +41,10 @@ namespace backend_api
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IDiaryEntryRepository, DiaryEntryRepository>();
             services.AddScoped<IFoodItemRepository, FoodItemRepository>();
+
+            services.AddScoped<IDiaryEntryService, DiaryEntryService>();
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddAutoMapper(typeof(Startup));
         }
