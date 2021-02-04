@@ -1,6 +1,4 @@
-using backend_api.Domain.Models;
-
-namespace backend_api.Resources
+namespace backend_api.Resources.User
 {
     public class UserResource
     {

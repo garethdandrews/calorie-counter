@@ -1,4 +1,4 @@
-namespace backend_api.Resources
+namespace backend_api.Resources.FoodItem
 {
     public class FoodItemResource
     {

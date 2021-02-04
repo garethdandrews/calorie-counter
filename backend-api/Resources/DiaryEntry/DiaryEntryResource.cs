@@ -1,6 +1,6 @@
 using System;
 
-namespace backend_api.Resources
+namespace backend_api.Resources.DiaryEntry
 {
     public class DiaryEntryResource
     {
