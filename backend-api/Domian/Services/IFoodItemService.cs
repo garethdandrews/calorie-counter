@@ -1,11 +1,13 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using backend_api.Domain.Models;
+using backend_api.Domain.Services.Communication;
 
 namespace backend_api.Domain.Services
 {
     public interface IFoodItemService
     {
-        Task<IEnumerable<FoodItem>> GetFoodItemsInDiaryEntry(int diaryEntryId);
+        Task<IEnumerable<FoodItem>> ListAsync();
+        Task<AddFoodItemResponse> AddFoodItemAsync(int userId, string stringDate, string name, int calories);
     }
 }

@@ -18,5 +18,25 @@ namespace backend_api.Persistence.Repositories
         {
             return await _context.FoodItems.ToListAsync();
         }
+
+        public async Task<FoodItem> GetFoodItemAsync(int id)
+        {
+            return await _context.FoodItems.FindAsync(id);
+        }
+
+        public async Task AddFoodItemAsync(FoodItem foodItem)
+        {
+            await _context.FoodItems.AddAsync(foodItem);
+        }
+
+        public void Update(FoodItem foodItem)
+        {
+            _context.FoodItems.Update(foodItem);
+        }
+
+        public void Remove(FoodItem foodItem)
+        {
+            _context.FoodItems.Remove(foodItem);
+        }
     }
 }
