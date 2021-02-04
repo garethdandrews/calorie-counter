@@ -1,4 +1,4 @@
-namespace backend_api.Resources.User
+namespace backend_api.Resources.UserResources
 {
     public class UserResource
     {

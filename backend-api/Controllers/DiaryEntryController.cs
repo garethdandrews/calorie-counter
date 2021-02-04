@@ -4,8 +4,7 @@ using AutoMapper;
 using backend_api.Domain.Models;
 using backend_api.Domain.Services;
 using backend_api.Extensions;
-using backend_api.Resources.DiaryEntry;
-using backend_api.Resources.FoodItem;
+using backend_api.Resources.DiaryEntryResources;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend_api.Controllers
@@ -29,6 +28,20 @@ namespace backend_api.Controllers
             var resources = _mapper.Map<IEnumerable<DiaryEntry>, IEnumerable<DiaryEntryResource>>(diaryEntries);
 
             return resources;
+        }
+
+        public async Task<IActionResult> GetDiaryEntry([FromBody] GetDiaryEntryResource resource)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState.GetErrorMessages());
+
+            var result = await _diaryEntryService.GetDiaryEntry(resource.StringDate);
+            
+            if (!result.Success)
+                return BadRequest(result.Message);
+
+            var diaryEntryResource = _mapper.Map<DiaryEntry, DiaryEntryResource>(result.DiaryEntry);
+            return Ok(diaryEntryResource);
         }
     }
 }

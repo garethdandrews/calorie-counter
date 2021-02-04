@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace backend_api.Resources.FoodItem
+namespace backend_api.Resources.FoodItemResources
 {
     public class SaveFoodItemResource
     {
