@@ -52,9 +52,16 @@ namespace backend_api.Services
             if (diaryEntry == null)
                 return new DiaryEntryResponse("No diary found for that day.");
 
-            var diaryEntryWithFoodItems = await _diaryEntryRepository.GetDiaryAsync(diaryEntry.Id);
+            var diaryEntryWithFoodItems = await _diaryEntryRepository.GetAsync(diaryEntry.Id);
 
             return new DiaryEntryResponse(diaryEntryWithFoodItems);
+        }
+
+        public async Task<DiaryEntryResponse> AddDiaryEntry(int userId, DateTime date)
+        {
+            // get the user
+            // check if the user already has a diary entry for that date
+            // create a diary entry
         }
 
     }

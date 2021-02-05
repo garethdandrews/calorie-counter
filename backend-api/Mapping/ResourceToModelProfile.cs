@@ -1,6 +1,7 @@
 using AutoMapper;
 using backend_api.Domain.Models;
 using backend_api.Resources.FoodItemResources;
+using backend_api.Resources.UserResources;
 
 namespace backend_api.Mapping
 {
@@ -8,7 +9,7 @@ namespace backend_api.Mapping
     {
         public ResourceToModelProfile()
         {
-            
+            CreateMap<AddUserResource, User>();
         }
     }    
 }

@@ -19,12 +19,12 @@ namespace backend_api.Persistence.Repositories
             return await _context.Users.ToListAsync();
         }
 
-        public async Task<User> GetUserAsync(int id)
+        public async Task<User> GetAsync(int id)
         {
             return await _context.Users.FindAsync(id);
         }
 
-        public async Task AddDiaryEntryAsync(User user)
+        public async Task AddAsync(User user)
         {
             await _context.Users.AddAsync(user);
         }

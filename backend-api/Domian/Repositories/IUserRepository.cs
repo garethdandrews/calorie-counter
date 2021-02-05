@@ -7,8 +7,8 @@ namespace backend_api.Domain.Repositories
     public interface IUserRepository
     {
         Task<IEnumerable<User>> ListAsync();
-        Task<User> GetUserAsync(int id);
-        Task AddDiaryEntryAsync(User user);
+        Task<User> GetAsync(int id);
+        Task AddAsync(User user);
         void Update(User user);
     }
 }

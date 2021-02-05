@@ -20,12 +20,12 @@ namespace backend_api.Persistence.Repositories
             return await _context.DiaryEntries.ToListAsync();
         }
 
-        public async Task<DiaryEntry> GetDiaryAsync(int id)
+        public async Task<DiaryEntry> GetAsync(int id)
         {
             return await _context.DiaryEntries.Include(x => x.FoodItems).FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task AddDiaryEntryAsync(DiaryEntry diaryEntry)
+        public async Task AddAsync(DiaryEntry diaryEntry)
         {
             await _context.DiaryEntries.AddAsync(diaryEntry);
         }

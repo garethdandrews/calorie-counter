@@ -71,6 +71,8 @@ namespace backend_api.Services
                 User = user
             };
 
+            diaryEntry.FoodItems.Add(foodItem);
+
             await _foodItemRepository.AddFoodItemAsync(foodItem);
             return new FoodItemResponse(foodItem);
 

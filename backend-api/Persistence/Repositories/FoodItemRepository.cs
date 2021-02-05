@@ -19,12 +19,12 @@ namespace backend_api.Persistence.Repositories
             return await _context.FoodItems.ToListAsync();
         }
 
-        public async Task<FoodItem> GetFoodItemAsync(int id)
+        public async Task<FoodItem> GetAsync(int id)
         {
             return await _context.FoodItems.FindAsync(id);
         }
 
-        public async Task AddFoodItemAsync(FoodItem foodItem)
+        public async Task AddAsync(FoodItem foodItem)
         {
             await _context.FoodItems.AddAsync(foodItem);
         }

@@ -3,10 +3,17 @@ using backend_api.Domain.Models;
 
 namespace backend_api.Resources.UserResources
 {
-    public class UserResource
+    public class AddUserResource
     {
+        [Required]
+        [MaxLength(30)]
         public string Name { get; set; }
-        public string Gender { get; set; }
+
+        [Required]
+        [EnumDataType(typeof(EGender))]
+        public EGender Gender { get; set; }
+
+        [Required]
         public int CalorieTarget { get; set; }
     }
 }

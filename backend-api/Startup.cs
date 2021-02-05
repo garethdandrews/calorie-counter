@@ -42,6 +42,7 @@ namespace backend_api
             services.AddScoped<IDiaryEntryRepository, DiaryEntryRepository>();
             services.AddScoped<IFoodItemRepository, FoodItemRepository>();
 
+            services.AddScoped<IUserService, UserService>();
             services.AddScoped<IDiaryEntryService, DiaryEntryService>();
             services.AddScoped<IFoodItemService, FoodItemService>();
 

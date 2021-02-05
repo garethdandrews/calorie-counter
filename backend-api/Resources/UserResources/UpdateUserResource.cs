@@ -1,12 +1,10 @@
 using System.ComponentModel.DataAnnotations;
-using backend_api.Domain.Models;
 
 namespace backend_api.Resources.UserResources
 {
-    public class UserResource
+    public class UpdateUserResource
     {
-        public string Name { get; set; }
-        public string Gender { get; set; }
+        [Required]
         public int CalorieTarget { get; set; }
     }
 }
