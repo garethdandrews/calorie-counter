@@ -30,7 +30,7 @@ namespace backend_api.Services
             return await _foodItemRepository.ListAsync();
         }
 
-        public async Task<FoodItemResponse> AddFoodItemAsync(AddFoodItemResource resource)
+        public async Task<BaseResponse> AddFoodItemAsync(AddFoodItemResource resource)
         {
             // validate userId
             var userResult = await _userService.GetUserAync(resource.UserId);

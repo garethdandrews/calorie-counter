@@ -29,6 +29,7 @@ namespace backend_api.Services
             return await _diaryEntryRepository.ListAsync();
         }
 
+        // validates and converts stringDate to DateTime
         public async Task<DiaryEntryResponse> GetDiaryEntryAsync(int userId, string stringDate)
         {
             DateTime date;
@@ -44,13 +45,13 @@ namespace backend_api.Services
             return await GetDiaryEntryAsync(userId, date);
         }
 
-        public async Task<BaseResponse> GetDiaryEntryAsync(int userId, DateTime date)
+        public async Task<DiaryEntryResponse> GetDiaryEntryAsync(int userId, DateTime date)
         {
             // validate userId
             var userResult = await _userService.GetUserAync(userId);
 
             if (!userResult.Success)
-                return userResult;
+                return new DiaryEntryResponse(userResult.Message);
 
             var diaryEntryResult = await GetUsersDiaryEntryForDateAsync(userId, date);
 
