@@ -12,8 +12,9 @@ namespace backend_api.Domain.Services
         Task<DiaryEntryResponse> GetDiaryEntryAsync(int userId, string stringDate);
         Task<DiaryEntryResponse> GetDiaryEntryAsync(int userId, DateTime date);
         Task<DiaryEntryResponse> GetUsersDiaryEntryForDateAsync(int userId, DateTime date);
+        Task<DiaryEntryResponse> UpdateCalorieTargetAsync(int userId, int calorieTarget);
         Task<DiaryEntryResponse> AddDiaryEntryAsync(int userId, DateTime date);
-        Task<DiaryEntryResponse> UpdateDiaryEntryAsync(int id, DiaryEntry diaryEntry);
+        Task<DiaryEntryResponse> UpdateDiaryEntryAsync(int id, int calorieTarget);
         Task<DiaryEntryResponse> DeleteDiaryEntryAsync(int id);
     }
 }

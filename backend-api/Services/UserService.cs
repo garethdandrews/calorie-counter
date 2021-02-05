@@ -10,11 +10,13 @@ namespace backend_api.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IDiaryEntryService _diaryEntryService;
         private readonly IUnitOfWork _unitOfWork;
 
-        public UserService(IUserRepository userRepository, IUnitOfWork unitOfWork)
+        public UserService(IUserRepository userRepository, IDiaryEntryService diaryEntryService, IUnitOfWork unitOfWork)
         {
             _userRepository = userRepository;
+            _diaryEntryService = diaryEntryService;
             _unitOfWork = unitOfWork;
         }
 
@@ -49,6 +51,11 @@ namespace backend_api.Services
                 return new UserResponse($"User {id} not found");
 
             existingUser.CalorieTarget = user.CalorieTarget;
+            
+            var diaryEntryResult = await _diaryEntryService.UpdateCalorieTargetAsync(id, user.CalorieTarget);
+
+            if (!diaryEntryResult.Success)
+                return new UserResponse(diaryEntryResult.Message);
 
             try
             {

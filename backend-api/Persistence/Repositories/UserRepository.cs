@@ -23,7 +23,8 @@ namespace backend_api.Persistence.Repositories
         public async Task<User> GetAsync(int id)
         {
             return await _context.Users
-                    .FindAsync(id);
+                    .Include(x => x.Diary)
+                    .FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task AddAsync(User user)

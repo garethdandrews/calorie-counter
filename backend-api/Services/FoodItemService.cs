@@ -51,6 +51,9 @@ namespace backend_api.Services
                 return new FoodItemResponse(e.Message);
             }
 
+            if (date.Date > DateTime.Now)
+                return new FoodItemResponse("Can't add a food item in the future");
+
             DiaryEntry diaryEntry;
 
             // check if user has a diary entry for the day
@@ -79,13 +82,7 @@ namespace backend_api.Services
                 User = userResult.User
             };
 
-            // CHECK IF THIS IS ACTUALLY UPDATING IN THE DATABASE
-            // if not, we need to call the update method, but also need an id for the existing diaryEntry, so need to get that before
             diaryEntry.TotalCalories += resource.Calories;
-
-            // var updateDiaryEntryResult = await _diaryEntryService.UpdateDiaryEntryAsync(id, diaryEntry);
-            // if (!updateDiaryEntryResult.Success)
-            //     return new FoodItemResponse($"An error has occurred when saving the food item: {updateDiaryEntryResult.Message}");
 
             try
             {

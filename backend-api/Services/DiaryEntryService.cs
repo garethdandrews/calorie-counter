@@ -63,8 +63,6 @@ namespace backend_api.Services
             return new DiaryEntryResponse(diaryEntryWithFoodItems);
         }
 
-        
-
         public async Task<DiaryEntryResponse> AddDiaryEntryAsync(int userId, DateTime date)
         {
             // validate userId
@@ -109,14 +107,14 @@ namespace backend_api.Services
             return new DiaryEntryResponse(diaryEntry);
         }
 
-        public async Task<DiaryEntryResponse> UpdateDiaryEntryAsync(int id, DiaryEntry diaryEntry)
+        public async Task<DiaryEntryResponse> UpdateDiaryEntryAsync(int id, int calorieTarget)
         {
             var existingDiaryEntry = await _diaryEntryRepository.GetAsync(id);
 
             if (existingDiaryEntry == null)
                 return new DiaryEntryResponse($"Diary entry {id} not found");
 
-            existingDiaryEntry.TotalCalories = diaryEntry.TotalCalories;
+            existingDiaryEntry.CalorieTarget = calorieTarget;
 
             try
             {
@@ -129,6 +127,18 @@ namespace backend_api.Services
             }
 
             return new DiaryEntryResponse(existingDiaryEntry);
+        }
+
+        public async Task<DiaryEntryResponse> UpdateCalorieTargetAsync(int userId, int calorieTarget)
+        {
+            var diaryEntry = await GetUsersDiaryEntryForDateAsync(userId, DateTime.Now.Date);
+
+            if (!diaryEntry.Success)
+                return diaryEntry;
+
+            var updateDiaryEntryResult = await UpdateDiaryEntryAsync(diaryEntry.DiaryEntry.Id, calorieTarget);
+
+            return updateDiaryEntryResult;
         }
 
         public async Task<DiaryEntryResponse> DeleteDiaryEntryAsync(int id)
