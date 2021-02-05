@@ -12,11 +12,13 @@ namespace backend_api.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IPasswordHasher _passwordHasher;
 
-        public UserService(IUserRepository userRepository, IUnitOfWork unitOfWork)
+        public UserService(IUserRepository userRepository, IUnitOfWork unitOfWork, IPasswordHasher passwordHasher)
         {
             _userRepository = userRepository;
             _unitOfWork = unitOfWork;
+            _passwordHasher = passwordHasher;
         }
 
         public async Task<UserResponse> GetUserAync(int id)
@@ -27,11 +29,22 @@ namespace backend_api.Services
             return new UserResponse(user);
         }
 
-        public async Task<UserResponse> AddUserAsync(User user)
+        public async Task<User> GetUserByNameAsync(string name)
         {
+            return await _userRepository.GetUserByNameAsync(name);
+        }
+
+        public async Task<UserResponse> AddUserAsync(User user, params EApplicationRole[] userRoles)
+        {
+            var existingUser = await GetUserByNameAsync(user.Name);
+            if (existingUser != null)
+                return new UserResponse("Username is already in use");
+
+            user.Password = _passwordHasher.HashPassword(user.Password);
+
             try
             {
-                await _userRepository.AddAsync(user);
+                await _userRepository.AddAsync(user, userRoles);
                 await _unitOfWork.CompleteAsync();
 
                 return new UserResponse(user);

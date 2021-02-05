@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using backend_api.Domain.Models;
 using backend_api.Domain.Repositories;
@@ -27,8 +28,26 @@ namespace backend_api.Persistence.Repositories
                     .FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task AddAsync(User user)
+        public async Task<User> GetUserByNameAsync(string name)
         {
+            return await _context.Users
+                    .Include(x => x.UserRoles)
+                    .ThenInclude(x => x.Role)
+                    .SingleOrDefaultAsync(x => x.Name == name);
+        }
+
+        public async Task AddAsync(User user, EApplicationRole[] userRoles)
+        {
+            var roleNames = userRoles.Select(x => x.ToString()).ToList();
+            var roles = await _context.Roles
+                    .Where(x => roleNames.Contains(x.Name))
+                    .ToListAsync();
+
+            foreach(var role in roles)
+            {
+                user.UserRoles.Add(new UserRole {RoleId = role.Id});
+            }
+
             await _context.Users
                     .AddAsync(user);
         }

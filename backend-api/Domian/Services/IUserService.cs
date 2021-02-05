@@ -7,7 +7,7 @@ namespace backend_api.Domain.Services
     public interface IUserService
     {
         Task<UserResponse> GetUserAync(int id);
-        Task<UserResponse> AddUserAsync(User user);
+        Task<UserResponse> AddUserAsync(User user, params EApplicationRole[] userRoles);
         Task<UserResponse> UpdateUserAsync(int id, User user);
     }
 }

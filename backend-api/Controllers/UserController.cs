@@ -39,7 +39,7 @@ namespace backend_api.Controllers
                 return BadRequest(ModelState.GetErrorMessages());
 
             var user = _mapper.Map<AddUserResource, User>(resource);
-            var result = await _userService.AddUserAsync(user);
+            var result = await _userService.AddUserAsync(user, EApplicationRole.Common);
 
             if (!result.Success)
                 return BadRequest(result.Message);
