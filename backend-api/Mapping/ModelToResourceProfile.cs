@@ -1,8 +1,8 @@
 using AutoMapper;
+using backend_api.Controllers.DiaryEntryResources;
+using backend_api.Controllers.FoodItemResources;
+using backend_api.Controllers.UserResources;
 using backend_api.Domain.Models;
-using backend_api.Resources.UserResources;
-using backend_api.Resources.DiaryEntryResources;
-using backend_api.Resources.FoodItemResources;
 
 namespace backend_api.Mapping
 {

@@ -11,7 +11,6 @@ namespace backend_api.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
-        private readonly IDiaryEntryService _diaryEntryService;
         private readonly IUnitOfWork _unitOfWork;
 
         public UserService(IUserRepository userRepository, IUnitOfWork unitOfWork)

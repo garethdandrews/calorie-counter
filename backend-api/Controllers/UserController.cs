@@ -1,9 +1,9 @@
 using System.Threading.Tasks;
 using AutoMapper;
+using backend_api.Controllers.UserResources;
 using backend_api.Domain.Models;
 using backend_api.Domain.Services;
 using backend_api.Extensions;
-using backend_api.Resources.UserResources;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend_api.Controllers

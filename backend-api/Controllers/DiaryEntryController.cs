@@ -1,10 +1,9 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using backend_api.Controllers.DiaryEntryResources;
 using backend_api.Domain.Models;
 using backend_api.Domain.Services;
 using backend_api.Extensions;
-using backend_api.Resources.DiaryEntryResources;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend_api.Controllers

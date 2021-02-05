@@ -6,7 +6,6 @@ using backend_api.Domain.Models;
 using backend_api.Domain.Repositories;
 using backend_api.Domain.Services;
 using backend_api.Domain.Services.Communication;
-using backend_api.Resources.DiaryEntryResources;
 using backend_api.Services.Helpers;
 
 namespace backend_api.Services

@@ -1,7 +1,7 @@
 using AutoMapper;
+using backend_api.Controllers.FoodItemResources;
+using backend_api.Controllers.UserResources;
 using backend_api.Domain.Models;
-using backend_api.Resources.FoodItemResources;
-using backend_api.Resources.UserResources;
 
 namespace backend_api.Mapping
 {
