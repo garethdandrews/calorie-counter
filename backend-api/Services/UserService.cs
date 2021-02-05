@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using backend_api.Domain.Models;
 using backend_api.Domain.Repositories;
@@ -13,10 +14,9 @@ namespace backend_api.Services
         private readonly IDiaryEntryService _diaryEntryService;
         private readonly IUnitOfWork _unitOfWork;
 
-        public UserService(IUserRepository userRepository, IDiaryEntryService diaryEntryService, IUnitOfWork unitOfWork)
+        public UserService(IUserRepository userRepository, IUnitOfWork unitOfWork)
         {
             _userRepository = userRepository;
-            _diaryEntryService = diaryEntryService;
             _unitOfWork = unitOfWork;
         }
 
@@ -51,11 +51,7 @@ namespace backend_api.Services
                 return new UserResponse($"User {id} not found");
 
             existingUser.CalorieTarget = user.CalorieTarget;
-            
-            var diaryEntryResult = await _diaryEntryService.UpdateCalorieTargetAsync(id, user.CalorieTarget);
-
-            if (!diaryEntryResult.Success)
-                return new UserResponse(diaryEntryResult.Message);
+            UpdateCalorieTargetForToday(existingUser.Diary, existingUser.CalorieTarget);
 
             try
             {
@@ -69,5 +65,17 @@ namespace backend_api.Services
                 return new UserResponse($"An error occurred when updating the user: {e}");
             }
         }
+
+        private bool UpdateCalorieTargetForToday(List<DiaryEntry> diary, int calorieTarget)
+        {
+            var todaysDiaryEntry = diary.Find(x => x.Date.Date == DateTime.Now.Date);
+
+            if (todaysDiaryEntry == null)
+                return false;
+
+            todaysDiaryEntry.CalorieTarget = calorieTarget;
+
+            return true;
+        } 
     }
 }

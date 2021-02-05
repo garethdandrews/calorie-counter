@@ -7,6 +7,6 @@ namespace backend_api.Domain.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public int CalorieTarget { get; set; }
-        public IList<DiaryEntry> Diary { get; set; }
+        public List<DiaryEntry> Diary { get; set; }
     }
 }

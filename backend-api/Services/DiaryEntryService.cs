@@ -102,7 +102,7 @@ namespace backend_api.Services
             var diaryEntry = await _diaryEntryRepository.GetUsersDiaryEntryForDate(userId, date);
 
             if (diaryEntry == null)
-                return new DiaryEntryResponse($"User {userId} has no diary for that day");
+                return new DiaryEntryResponse($"User {userId} has no diary entry for that day");
 
             return new DiaryEntryResponse(diaryEntry);
         }
