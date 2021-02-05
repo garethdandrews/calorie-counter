@@ -10,7 +10,7 @@ namespace backend_api.Services.Helpers
             if (DateTime.TryParse(stringDate, out date))
                 string.Format("{0:d/MM/yyyy}", date);
             else
-                throw new ArgumentException("Invalid date. Must be in the format dd/MM/yyyy.");
+                throw new ArgumentException("Invalid date. Must be in the format dd/mm/yyyy or dd-mm-yyyy");
             return date;
         }
     }

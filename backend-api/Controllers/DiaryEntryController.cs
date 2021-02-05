@@ -30,13 +30,13 @@ namespace backend_api.Controllers
         //     return resources;
         // }
         
-        [HttpGet]
-        public async Task<IActionResult> GetAsync([FromBody] GetDiaryEntryResource resource)
+        [HttpGet("{userId}/{stringDate}")]
+        public async Task<IActionResult> GetAsync(int userId, string stringDate)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState.GetErrorMessages());
 
-            var result = await _diaryEntryService.GetDiaryEntryAsync(resource.UserId, resource.StringDate);
+            var result = await _diaryEntryService.GetDiaryEntryAsync(userId, stringDate);
             
             if (!result.Success)
                 return BadRequest(result.Message);
