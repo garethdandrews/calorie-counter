@@ -133,6 +133,9 @@ namespace backend_api.Services
             if (existingFoodItem == null)
                 return new FoodItemResponse($"Food item {id} not found");
 
+            // CHECK IF THIS WORKS - may need to get the diary entry and then update it
+            existingFoodItem.DiaryEntry.TotalCalories -= existingFoodItem.Calories;
+
             try
             {
                 _foodItemRepository.Remove(existingFoodItem);
