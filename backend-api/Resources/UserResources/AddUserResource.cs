@@ -10,10 +10,6 @@ namespace backend_api.Resources.UserResources
         public string Name { get; set; }
 
         [Required]
-        [EnumDataType(typeof(EGender))]
-        public EGender Gender { get; set; }
-
-        [Required]
         public int CalorieTarget { get; set; }
     }
 }
