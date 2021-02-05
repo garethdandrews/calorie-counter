@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using backend_api.Domain.Models;
+using backend_api.Resources.FoodItemResources;
 
 namespace backend_api.Resources.DiaryEntryResources
 {
@@ -8,6 +8,6 @@ namespace backend_api.Resources.DiaryEntryResources
     {
         public DateTime Date { get; set; }
         public int TotalCalories { get; set; }
-        public IList<FoodItem> FoodItems { get; set; }
+        public IList<FoodItemResource> FoodItems { get; set; }
     }
 }

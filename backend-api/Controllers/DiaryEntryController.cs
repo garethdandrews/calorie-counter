@@ -30,7 +30,8 @@ namespace backend_api.Controllers
             return resources;
         }
         
-        public async Task<IActionResult> GetDiaryEntry([FromBody] GetDiaryEntryResource resource)
+        [HttpGet]
+        public async Task<IActionResult> GetAsync([FromBody] GetDiaryEntryResource resource)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState.GetErrorMessages());

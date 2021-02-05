@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,27 +18,41 @@ namespace backend_api.Persistence.Repositories
 
         public async Task<IEnumerable<DiaryEntry>> ListAsync()
         {
-            return await _context.DiaryEntries.ToListAsync();
+            return await _context.DiaryEntries
+                    .ToListAsync();
         }
 
         public async Task<DiaryEntry> GetAsync(int id)
         {
-            return await _context.DiaryEntries.Include(x => x.FoodItems).FirstOrDefaultAsync(x => x.Id == id);
+            return await _context.DiaryEntries
+                    .Include(x => x.FoodItems)
+                    .FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task AddAsync(DiaryEntry diaryEntry)
         {
-            await _context.DiaryEntries.AddAsync(diaryEntry);
+            await _context.DiaryEntries
+                    .AddAsync(diaryEntry);
         }
 
         public void Update(DiaryEntry diaryEntry)
         {
-            _context.DiaryEntries.Update(diaryEntry);
+            _context.DiaryEntries
+                    .Update(diaryEntry);
         }
 
         public async Task<List<DiaryEntry>> GetUsersDiaryEntries(int userId)
         {
-            return await _context.DiaryEntries.Where(x => x.User.Id == userId).ToListAsync();
+            return await _context.DiaryEntries
+                    .Where(x => x.User.Id == userId)
+                    .ToListAsync();
+        }
+
+        public async Task<DiaryEntry> GetUsersDiaryEntryForDate(int userId, DateTime date)
+        {
+            return await _context.DiaryEntries
+                    .Include(x => x.FoodItems)
+                    .FirstOrDefaultAsync(x => x.User.Id == userId && x.Date == date);
         }
     }
 }

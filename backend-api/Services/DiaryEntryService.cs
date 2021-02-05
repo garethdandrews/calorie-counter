@@ -14,10 +14,14 @@ namespace backend_api.Services
     public class DiaryEntryService : IDiaryEntryService
     {
         private IDiaryEntryRepository _diaryEntryRepository;
+        private readonly IUserService _userService;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public DiaryEntryService(IDiaryEntryRepository diaryEntryRepository)
+        public DiaryEntryService(IDiaryEntryRepository diaryEntryRepository, IUserService userService, IUnitOfWork unitOfWork)
         {
             _diaryEntryRepository = diaryEntryRepository;
+            _userService = userService;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<IEnumerable<DiaryEntry>> ListAsync()
@@ -30,7 +34,7 @@ namespace backend_api.Services
             DateTime date;
             try
             {
-                date = StringDateHelper.ConverStringDateToDate(stringDate)
+                date = StringDateHelper.ConverStringDateToDate(stringDate);
             }
             catch (ArgumentException e)
             {
@@ -42,15 +46,16 @@ namespace backend_api.Services
 
         public async Task<DiaryEntryResponse> GetDiaryEntry(int userId, DateTime date)
         {
-            var usersDiaryEntries = await _diaryEntryRepository.GetUsersDiaryEntries(userId);
+            // validate userId
+            var userResult = await _userService.GetUserAync(userId);
 
-            if (usersDiaryEntries.Count == 0)
-                return new DiaryEntryResponse("User has no diary entries.");
+            if (!userResult.Success)
+                return new DiaryEntryResponse(userResult.Message);
 
-            var diaryEntry = usersDiaryEntries.FirstOrDefault(x => x.Date == date);
+            var diaryEntry = await _diaryEntryRepository.GetUsersDiaryEntryForDate(userId, date);
 
             if (diaryEntry == null)
-                return new DiaryEntryResponse("No diary found for that day.");
+                return new DiaryEntryResponse($"User {userResult.User.Id} has no diary for that day");
 
             var diaryEntryWithFoodItems = await _diaryEntryRepository.GetAsync(diaryEntry.Id);
 
@@ -59,10 +64,39 @@ namespace backend_api.Services
 
         public async Task<DiaryEntryResponse> AddDiaryEntry(int userId, DateTime date)
         {
-            // get the user
+            // validate userId
+            var userResult = await _userService.GetUserAync(userId);
+
+            if (!userResult.Success)
+                return new DiaryEntryResponse(userResult.Message);
+            
             // check if the user already has a diary entry for that date
-            // create a diary entry
+            var diaryEntry = await _diaryEntryRepository.GetUsersDiaryEntryForDate(userId, date);
+
+            if (diaryEntry != null)
+                return new DiaryEntryResponse($"User {userResult.User.Id} already has a diary entry for that day");
+            
+            // create a new diary entry
+            diaryEntry = new DiaryEntry
+            {
+                Date = date,
+                User = userResult.User
+            };
+
+            try
+            {
+                await _diaryEntryRepository.AddAsync(diaryEntry);
+                await _unitOfWork.CompleteAsync();
+            }
+            catch (Exception e)
+            {
+                return new DiaryEntryResponse($"An error occurred when saving the diary entry: {e}");
+            }
+
+            return new DiaryEntryResponse(diaryEntry);
         }
+
+        public async Task<DiaryEntryResponse>
 
     }
 }

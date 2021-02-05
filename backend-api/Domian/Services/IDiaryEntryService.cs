@@ -11,5 +11,6 @@ namespace backend_api.Domain.Services
         Task<IEnumerable<DiaryEntry>> ListAsync();
         Task<DiaryEntryResponse> GetDiaryEntry(int userId, string stringDate);
         Task<DiaryEntryResponse> GetDiaryEntry(int userId, DateTime date);
+        Task<DiaryEntryResponse> AddDiaryEntry(int userId, DateTime date);
     }
 }

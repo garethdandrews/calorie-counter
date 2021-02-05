@@ -21,7 +21,7 @@ namespace backend_api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostAsync(SaveFoodItemResource resource)
+        public async Task<IActionResult> PostAsync(AddFoodItemResource resource)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState.GetErrorMessages());
