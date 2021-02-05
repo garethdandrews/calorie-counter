@@ -41,6 +41,11 @@ namespace backend_api.Persistence.Repositories
                     .Update(diaryEntry);
         }
 
+        public void Remove(DiaryEntry diaryEntry)
+        {
+            _context.DiaryEntries.Remove(diaryEntry);
+        }
+
         public async Task<List<DiaryEntry>> GetUsersDiaryEntries(int userId)
         {
             return await _context.DiaryEntries

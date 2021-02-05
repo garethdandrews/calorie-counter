@@ -2,13 +2,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace backend_api.Resources.FoodItemResources
 {
-    public class SaveFoodItemResource
+    public class AddFoodItemResource
     {
         [Required]
         public int UserId { get; set; }
 
         [Required]
-        [MaxLength(8)]
         public string StringDate { get; set; }
 
         [Required]

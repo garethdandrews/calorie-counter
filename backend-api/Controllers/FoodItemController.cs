@@ -21,17 +21,33 @@ namespace backend_api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostAsync(AddFoodItemResource resource)
+        public async Task<IActionResult> PostAsync([FromBody] AddFoodItemResource resource)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState.GetErrorMessages());
 
-            var result = await _foodItemService.AddFoodItemAsync(resource.UserId, resource.StringDate, resource.Name, resource.Calories);
+            var result = await _foodItemService.AddFoodItemAsync(resource);
 
             if (!result.Success)
                 return BadRequest(result.Message);
 
             var foodItemResource = _mapper.Map<FoodItem, FoodItemResource>(result.FoodItem);
+            return Ok(foodItemResource);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> PutAsync(int id, AddFoodItemResource resource)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState.GetErrorMessages());
+
+            var foodItem = _mapper.Map<AddFoodItemResource, FoodItem>(resource);
+            var result = await _foodItemService.UpdateFoodItemAsync(id, foodItem);
+
+            if (!result.Success)
+                return BadRequest(result.Message);
+
+            var foodItemResource = _mapper.Map<FoodItem, FoodItemResource>(result.User);
             return Ok(foodItemResource);
         }
     }

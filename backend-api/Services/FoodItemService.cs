@@ -7,6 +7,7 @@ using backend_api.Domain.Repositories;
 using backend_api.Domain.Services;
 using backend_api.Domain.Services.Communication;
 using backend_api.Resources.DiaryEntryResources;
+using backend_api.Resources.FoodItemResources;
 using backend_api.Services.Helpers;
 
 namespace backend_api.Services
@@ -14,11 +15,13 @@ namespace backend_api.Services
     public class FoodItemService : IFoodItemService
     {
         private readonly IFoodItemRepository _foodItemRepository;
+        private readonly IUserService _userService;
         private readonly IDiaryEntryService _diaryEntryService;
 
-        public FoodItemService(IFoodItemRepository foodItemRepository, IDiaryEntryService diaryEntryService)
+        public FoodItemService(IFoodItemRepository foodItemRepository, IUserService userService, IDiaryEntryService diaryEntryService)
         {
             _foodItemRepository = foodItemRepository;
+            _userService = userService;
             _diaryEntryService = diaryEntryService;
         }
 
@@ -27,29 +30,20 @@ namespace backend_api.Services
             return await _foodItemRepository.ListAsync();
         }
 
-        public async Task<FoodItemResponse> AddFoodItemAsync(int userId, string stringDate, string name, int calories)
+        public async Task<FoodItemResponse> AddFoodItemAsync(AddFoodItemResource resource)
         {
-            // Check if diary entry exists for the date
-            // If not create one
-            // Get Id of diary entry
-            // Create a food item object
-            DateTime date;
-            try
-            {
-                date = StringDateHelper.ConverStringDateToDate(stringDate)
-            }
-            catch (ArgumentException e)
-            {
-                return new FoodItemResponse(e.Message);
-            }
+            // validate userId
+            var userResult = await _userService.GetUserAync(resource.UserId);
 
-            var result = await _diaryEntryService.GetDiaryEntry(userId, date);
-            
-            // get user object
-            User user = null;
-            // get calorie goal from user
+            if (!userResult.Success)
+                return new FoodItemResponse(userResult.Message);
 
-            DiaryEntry diaryEntry = result.DiaryEntry;
+            // check if user has a diary entry for the day
+            var diaryEntryResult = await _diaryEntryService.GetDiaryEntryAsync(resource.UserId, resource.StringDate);
+
+            if (!diaryEntryResult.Success)
+                return new FoodItemResponse(diaryEntryResult.Message);
+
 
             if (diaryEntry == null)
             {

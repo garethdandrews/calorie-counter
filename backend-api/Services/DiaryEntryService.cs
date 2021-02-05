@@ -29,7 +29,7 @@ namespace backend_api.Services
             return await _diaryEntryRepository.ListAsync();
         }
 
-        public async Task<DiaryEntryResponse> GetDiaryEntry(int userId, string stringDate)
+        public async Task<DiaryEntryResponse> GetDiaryEntryAsync(int userId, string stringDate)
         {
             DateTime date;
             try
@@ -41,28 +41,38 @@ namespace backend_api.Services
                 return new DiaryEntryResponse(e.Message);
             }
 
-            return await GetDiaryEntry(userId, date);
+            return await GetDiaryEntryAsync(userId, date);
         }
 
-        public async Task<DiaryEntryResponse> GetDiaryEntry(int userId, DateTime date)
+        public async Task<BaseResponse> GetDiaryEntryAsync(int userId, DateTime date)
         {
             // validate userId
             var userResult = await _userService.GetUserAync(userId);
 
             if (!userResult.Success)
-                return new DiaryEntryResponse(userResult.Message);
+                return userResult;
 
-            var diaryEntry = await _diaryEntryRepository.GetUsersDiaryEntryForDate(userId, date);
+            var diaryEntryResult = await GetUsersDiaryEntryForDateAsync(userId, date);
 
-            if (diaryEntry == null)
-                return new DiaryEntryResponse($"User {userResult.User.Id} has no diary for that day");
+            if (!diaryEntryResult.Success)
+                return diaryEntryResult;
 
-            var diaryEntryWithFoodItems = await _diaryEntryRepository.GetAsync(diaryEntry.Id);
+            var diaryEntryWithFoodItems = await _diaryEntryRepository.GetAsync(diaryEntryResult.DiaryEntry.Id);
 
             return new DiaryEntryResponse(diaryEntryWithFoodItems);
         }
 
-        public async Task<DiaryEntryResponse> AddDiaryEntry(int userId, DateTime date)
+        public async Task<DiaryEntryResponse> GetUsersDiaryEntryForDateAsync(int userId, DateTime date)
+        {
+            var diaryEntry = await _diaryEntryRepository.GetUsersDiaryEntryForDate(userId, date);
+
+            if (diaryEntry == null)
+                return new DiaryEntryResponse($"User {userId} has no diary for that day");
+
+            return new DiaryEntryResponse(diaryEntry);
+        }
+
+        public async Task<DiaryEntryResponse> AddDiaryEntryAsync(int userId, DateTime date)
         {
             // validate userId
             var userResult = await _userService.GetUserAync(userId);
@@ -96,7 +106,46 @@ namespace backend_api.Services
             return new DiaryEntryResponse(diaryEntry);
         }
 
-        public async Task<DiaryEntryResponse>
+        public async Task<DiaryEntryResponse> UpdateDiaryEntryAsync(int id, DiaryEntry diaryEntry)
+        {
+            var existingDiaryEntry = await _diaryEntryRepository.GetAsync(id);
 
+            if (existingDiaryEntry == null)
+                return new DiaryEntryResponse($"Diary entry {id} not found");
+
+            existingDiaryEntry.TotalCalories = diaryEntry.TotalCalories;
+
+            try
+            {
+                _diaryEntryRepository.Update(existingDiaryEntry);
+                await _unitOfWork.CompleteAsync();
+            }
+            catch (Exception e)
+            {
+                return new DiaryEntryResponse($"An error occurred when updating diary entry {id}: {e}");
+            }
+
+            return new DiaryEntryResponse(existingDiaryEntry);
+        }
+
+        public async Task<DiaryEntryResponse> DeleteDiaryEntryAsync(int id)
+        {
+            var existingDiaryEntry = await _diaryEntryRepository.GetAsync(id);
+
+            if (existingDiaryEntry == null)
+                return new DiaryEntryResponse($"Diary entry {id} not found");
+
+            try
+            {
+                _diaryEntryRepository.Remove(existingDiaryEntry);
+                await _unitOfWork.CompleteAsync();
+
+                return new DiaryEntryResponse(existingDiaryEntry);
+            }
+            catch (Exception e)
+            {
+                return new DiaryEntryResponse($"An error occurred when deleting diary entry {id}: {e}");
+            }
+        }
     }
 }

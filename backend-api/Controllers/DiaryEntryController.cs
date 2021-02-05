@@ -36,7 +36,7 @@ namespace backend_api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState.GetErrorMessages());
 
-            var result = await _diaryEntryService.GetDiaryEntry(resource.UserId, resource.StringDate);
+            var result = await _diaryEntryService.GetDiaryEntryAsync(resource.UserId, resource.StringDate);
             
             if (!result.Success)
                 return BadRequest(result.Message);
