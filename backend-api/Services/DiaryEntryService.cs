@@ -81,7 +81,8 @@ namespace backend_api.Services
             var diaryEntry = new DiaryEntry
             {
                 Date = date,
-                User = userResult.User
+                User = userResult.User,
+                CalorieTarget = userResult.User.CalorieTarget
             };
 
             try
