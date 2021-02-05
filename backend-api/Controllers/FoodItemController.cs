@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace backend_api.Controllers
 {
-    [Route("api/[controller")]
+    [Route("api/[controller]")]
     public class FoodItemController : Controller
     {
         private readonly IFoodItemService _foodItemService;
@@ -51,7 +51,7 @@ namespace backend_api.Controllers
             return Ok(foodItemResource);
         }
 
-        [HttpDelete("{id")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAsync(int id)
         {
             var result = await _foodItemService.DeleteFoodItemAsync(id);

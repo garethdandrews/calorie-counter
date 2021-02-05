@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace backend_api.Controllers
 {
-    [Route("api/[controller")]
+    [Route("api/[controller]")]
     public class DiaryEntryController : Controller 
     {
         private readonly IDiaryEntryService _diaryEntryService;
@@ -21,14 +21,14 @@ namespace backend_api.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
-        public async Task<IEnumerable<DiaryEntryResource>> GetAllAsync()
-        {
-            var diaryEntries = await _diaryEntryService.ListAsync();
-            var resources = _mapper.Map<IEnumerable<DiaryEntry>, IEnumerable<DiaryEntryResource>>(diaryEntries);
+        // [HttpGet]
+        // public async Task<IEnumerable<DiaryEntryResource>> GetAllAsync()
+        // {
+        //     var diaryEntries = await _diaryEntryService.ListAsync();
+        //     var resources = _mapper.Map<IEnumerable<DiaryEntry>, IEnumerable<DiaryEntryResource>>(diaryEntries);
 
-            return resources;
-        }
+        //     return resources;
+        // }
         
         [HttpGet]
         public async Task<IActionResult> GetAsync([FromBody] GetDiaryEntryResource resource)
