@@ -63,15 +63,7 @@ namespace backend_api.Services
             return new DiaryEntryResponse(diaryEntryWithFoodItems);
         }
 
-        public async Task<DiaryEntryResponse> GetUsersDiaryEntryForDateAsync(int userId, DateTime date)
-        {
-            var diaryEntry = await _diaryEntryRepository.GetUsersDiaryEntryForDate(userId, date);
-
-            if (diaryEntry == null)
-                return new DiaryEntryResponse($"User {userId} has no diary for that day");
-
-            return new DiaryEntryResponse(diaryEntry);
-        }
+        
 
         public async Task<DiaryEntryResponse> AddDiaryEntryAsync(int userId, DateTime date)
         {
@@ -82,13 +74,13 @@ namespace backend_api.Services
                 return new DiaryEntryResponse(userResult.Message);
             
             // check if the user already has a diary entry for that date
-            var diaryEntry = await _diaryEntryRepository.GetUsersDiaryEntryForDate(userId, date);
+            var diaryEntryResult = await GetUsersDiaryEntryForDateAsync(userId, date);
 
-            if (diaryEntry != null)
-                return new DiaryEntryResponse($"User {userResult.User.Id} already has a diary entry for that day");
+            if (diaryEntryResult.Success)
+                return new DiaryEntryResponse($"User {userId} already has a diary for that day");
             
             // create a new diary entry
-            diaryEntry = new DiaryEntry
+            var diaryEntry = new DiaryEntry
             {
                 Date = date,
                 User = userResult.User
@@ -103,6 +95,16 @@ namespace backend_api.Services
             {
                 return new DiaryEntryResponse($"An error occurred when saving the diary entry: {e}");
             }
+
+            return new DiaryEntryResponse(diaryEntry);
+        }
+
+        public async Task<DiaryEntryResponse> GetUsersDiaryEntryForDateAsync(int userId, DateTime date)
+        {
+            var diaryEntry = await _diaryEntryRepository.GetUsersDiaryEntryForDate(userId, date);
+
+            if (diaryEntry == null)
+                return new DiaryEntryResponse($"User {userId} has no diary for that day");
 
             return new DiaryEntryResponse(diaryEntry);
         }

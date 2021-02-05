@@ -16,22 +16,26 @@ namespace backend_api.Persistence.Repositories
 
         public async Task<IEnumerable<User>> ListAsync()
         {
-            return await _context.Users.ToListAsync();
+            return await _context.Users
+                    .ToListAsync();
         }
 
         public async Task<User> GetAsync(int id)
         {
-            return await _context.Users.FindAsync(id);
+            return await _context.Users
+                    .FindAsync(id);
         }
 
         public async Task AddAsync(User user)
         {
-            await _context.Users.AddAsync(user);
+            await _context.Users
+                    .AddAsync(user);
         }
 
         public void Update(User user)
         {
-            _context.Users.Update(user);
+            _context.Users
+                    .Update(user);
         }
     }
 }
