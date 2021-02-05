@@ -35,19 +35,31 @@ namespace backend_api.Controllers
             return Ok(foodItemResource);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> PutAsync(int id, AddFoodItemResource resource)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutAsync(int id, [FromBody] UpdateFoodItemResource resource)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState.GetErrorMessages());
 
-            var foodItem = _mapper.Map<AddFoodItemResource, FoodItem>(resource);
+            var foodItem = _mapper.Map<UpdateFoodItemResource, FoodItem>(resource);
             var result = await _foodItemService.UpdateFoodItemAsync(id, foodItem);
 
             if (!result.Success)
                 return BadRequest(result.Message);
 
-            var foodItemResource = _mapper.Map<FoodItem, FoodItemResource>(result.User);
+            var foodItemResource = _mapper.Map<FoodItem, FoodItemResource>(result.FoodItem);
+            return Ok(foodItemResource);
+        }
+
+        [HttpDelete("{id")]
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            var result = await _foodItemService.DeleteFoodItemAsync(id);
+
+            if (!result.Success)
+                return BadRequest(result.Message);
+
+            var foodItemResource = _mapper.Map<FoodItem, FoodItemResource>(result.FoodItem);
             return Ok(foodItemResource);
         }
     }

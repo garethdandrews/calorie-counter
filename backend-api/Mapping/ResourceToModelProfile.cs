@@ -10,6 +10,8 @@ namespace backend_api.Mapping
         public ResourceToModelProfile()
         {
             CreateMap<AddUserResource, User>();
+            CreateMap<UpdateUserResource, User>();
+            CreateMap<UpdateFoodItemResource, FoodItem>();
         }
     }    
 }

@@ -128,7 +128,22 @@ namespace backend_api.Services
 
         public async Task<FoodItemResponse> DeleteFoodItemAsync(int id)
         {
-            throw new NotImplementedException();
+            var existingFoodItem = await _foodItemRepository.GetAsync(id);
+
+            if (existingFoodItem == null)
+                return new FoodItemResponse($"Food item {id} not found");
+
+            try
+            {
+                _foodItemRepository.Remove(existingFoodItem);
+                await _unitOfWork.CompleteAsync();
+
+                return new FoodItemResponse(existingFoodItem);
+            }
+            catch (Exception e)
+            {
+                return new FoodItemResponse($"An error occurred when deleting diary entry {id}: {e}");
+            }
         }
     }
 }
