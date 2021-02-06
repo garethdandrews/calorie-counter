@@ -26,7 +26,7 @@ namespace backend_api.Persistence.Repositories
 
         /// <summary></summary>
         /// <returns>
-        /// Returns a list of users
+        /// A list of users
         /// </returns>
         public async Task<IEnumerable<User>> ListAsync()
         {
