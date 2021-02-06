@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using backend_api.Domain.Models;
 using backend_api.Domain.Security.Hashing;
 using backend_api.Domain.Security.Tokens;
-using backend_api.Domain.Security.Tokens.Security.Tokens;
 using Microsoft.Extensions.Options;
 
 namespace backend_api.Security.Tokens
@@ -76,7 +76,7 @@ namespace backend_api.Security.Tokens
                 signingCredentials : _signingConfigurations.SigningCredentials
             );
 
-            var handler = new TokenHandler();
+            var handler = new JwtSecurityTokenHandler();
             var accessToken = handler.WriteToken(securityToken);
 
             return new AccessToken(accessToken, accessTokenExpiration.Ticks, refreshToken);
