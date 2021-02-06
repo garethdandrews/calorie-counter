@@ -182,13 +182,9 @@ namespace backend_api.Services
 
             // check if this food item is the last one in the diary entry
             var foodItems = existingFoodItem.DiaryEntry.FoodItems;
+            bool deleteDiaryEntry = false;
             if (foodItems.Count == 1 && foodItems[0].Id == existingFoodItem.Id)
-            {
-                // delete the diary entry if it is
-                var deleteResult = await _diaryEntryService.DeleteDiaryEntryAsync(diaryEntry.Id);
-                if (!deleteResult.Success)
-                    return new FoodItemResponse($"Failed to delete food item: {deleteResult}");
-            }
+                deleteDiaryEntry = true; // mark the diary entry for deletion
 
             // remove the food item from the database and save the changes to the diary entry
             try
@@ -199,6 +195,14 @@ namespace backend_api.Services
             catch (Exception e)
             {
                 return new FoodItemResponse($"An error occurred when deleting diary entry {id}: {e}");
+            }
+
+            // wait until after the food item is deleted, as the food item is a child of the diary
+            if (deleteDiaryEntry)
+            {
+                var deleteResult = await _diaryEntryService.DeleteDiaryEntryAsync(diaryEntry.Id);
+                if (!deleteResult.Success)
+                    return new FoodItemResponse($"Failed to delete diary entry: {deleteResult}");
             }
 
             return new FoodItemResponse(existingFoodItem);
