@@ -12,19 +12,19 @@ namespace backend_api.Domain.Repositories
     {
         /// <summary></summary>
         /// <returns>
-        /// Returns a list of users
+        /// A list of users
         /// </returns>
         Task<IEnumerable<User>> ListAsync();
         
         /// <summary></summary>
         /// <returns>
-        /// Returns a list of users
+        /// A list of users
         /// </returns>
         Task<User> GetAsync(int id);
 
         /// <summary></summary>
         /// <returns>
-        /// Returns a list of users
+        /// A list of users
         /// </returns>
         Task<User> GetUserByNameAsync(string name);
 
