@@ -34,6 +34,34 @@ namespace backend_api.Controllers
                 return BadRequest(result.Message);
 
             var accessTokenResource = _mapper.Map<AccessToken, AccessTokenResource>(result.AccessToken);
+            return Ok(accessTokenResource);
+        }
+
+        [Route("/token/refresh")]
+        [HttpPost]
+        public async Task<IActionResult> RefreshTokenAsync([FromBody] RefreshTokenResource resource)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState.GetErrorMessages());
+
+            var result = await _authenticationService.RefreshTokenAsync(resource.Token, resource.Name);
+
+            if (!result.Success)
+                return BadRequest(result.Message);
+
+            var tokenResource = _mapper.Map<AccessToken, AccessTokenResource>(result.AccessToken);
+            return Ok(tokenResource);
+        }
+
+        [Route("/token/revoke")]
+        [HttpPost]
+        public IActionResult RevokeToken([FromBody] RevokeTokenResource resource)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState.GetErrorMessages());
+
+            _authenticationService.RevokeRefreshToken(resource.Token);
+            return NoContent();
         }
     }
 }

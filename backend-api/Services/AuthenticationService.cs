@@ -36,20 +36,14 @@ namespace backend_api.Services
             var token = _tokenHandler.TakeRefreshToken(refreshToken);
 
             if (token == null)
-            {
                 return new TokenResponse("Invalid refresh token");
-            }
 
             if (token.IsExpired())
-            {
                 return new TokenResponse("Expired refresh token");
-            }
 
             var user = await _userService.GetUserByNameAsync(name);
             if (user == null)
-            {
                 return new TokenResponse("Invalid refresh token");
-            }
 
             var accessToken = _tokenHandler.CreateAccessToken(user);
             return new TokenResponse(accessToken);
