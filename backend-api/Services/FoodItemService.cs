@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using backend_api.Controllers.FoodItemResources;
+using backend_api.Controllers.Resources.FoodItemResources;
 using backend_api.Domain.Models;
 using backend_api.Domain.Repositories;
 using backend_api.Domain.Services;

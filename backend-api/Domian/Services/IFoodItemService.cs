@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using backend_api.Controllers.FoodItemResources;
+using backend_api.Controllers.Resources.FoodItemResources;
 using backend_api.Domain.Models;
 using backend_api.Domain.Services.Communication;
 

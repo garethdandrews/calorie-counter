@@ -1,3 +1,5 @@
+using AutoMapper;
+using backend_api.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend_api.Controllers
@@ -10,7 +12,7 @@ namespace backend_api.Controllers
 
         public LoginController(IMapper mapper, IAuthenticationService authenticationService)
         {
-            _mapper;
+            _mapper = mapper;
             _authenticationService = authenticationService;
         }
     }

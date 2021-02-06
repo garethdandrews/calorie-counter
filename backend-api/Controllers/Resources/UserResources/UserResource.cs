@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace backend_api.Controllers.UserResources
+namespace backend_api.Controllers.Resources.UserResources
 {
     public class UserResource
     {

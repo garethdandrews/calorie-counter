@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using backend_api.Controllers.FoodItemResources;
+using backend_api.Controllers.Resources.FoodItemResources;
 
-namespace backend_api.Controllers.DiaryEntryResources
+namespace backend_api.Controllers.Resources.DiaryEntryResources
 {
     public class DiaryEntryResource
     {

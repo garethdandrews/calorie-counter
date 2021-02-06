@@ -9,7 +9,7 @@ namespace backend_api.Domain.Repositories
         Task<IEnumerable<User>> ListAsync();
         Task<User> GetAsync(int id);
         Task<User> GetUserByNameAsync(string name);
-        Task AddAsync(User user, EApplicationRole[] userRoles)
+        Task AddAsync(User user, EApplicationRole[] userRoles);
         void Update(User user);
     }
 }

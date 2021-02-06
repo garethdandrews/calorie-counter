@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace backend_api.Controllers.UserResources
+namespace backend_api.Controllers.Resources.UserResources
 {
     public class UpdateUserResource
     {

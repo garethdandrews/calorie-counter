@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using AutoMapper;
-using backend_api.Controllers.FoodItemResources;
+using backend_api.Controllers.Resources.FoodItemResources;
 using backend_api.Domain.Models;
 using backend_api.Domain.Services;
 using backend_api.Extensions;

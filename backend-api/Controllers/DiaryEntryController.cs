@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using AutoMapper;
-using backend_api.Controllers.DiaryEntryResources;
+using backend_api.Controllers.Resources.DiaryEntryResources;
 using backend_api.Domain.Models;
 using backend_api.Domain.Services;
 using backend_api.Extensions;
