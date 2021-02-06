@@ -4,11 +4,12 @@ namespace backend_api.Controllers.Resources.UserResources
 {
     public class AddUserResource
     {
-        [Required]
-        [MaxLength(30)]
+        [Required]        
+        [StringLength(20, ErrorMessage = "Must be between 6 and 30 characters", MinimumLength = 5)]        
         public string Name { get; set; }
 
-        [Required]
+        [Required]        
+        [StringLength(20, ErrorMessage = "Must be between 6 and 30 characters", MinimumLength = 5)]   
         public string Password { get; set; }
 
         [Required]

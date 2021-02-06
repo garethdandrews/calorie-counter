@@ -4,6 +4,7 @@ using backend_api.Controllers.Resources.UserResources;
 using backend_api.Domain.Models;
 using backend_api.Domain.Services;
 using backend_api.Extensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend_api.Controllers
@@ -87,6 +88,7 @@ namespace backend_api.Controllers
          /// success response with the user
          /// </returns>
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> PutAsync(int id, [FromBody] UpdateUserResource resource)
         {
             if (!ModelState.IsValid)
