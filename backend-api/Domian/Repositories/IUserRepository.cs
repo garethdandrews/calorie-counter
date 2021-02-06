@@ -6,6 +6,9 @@ namespace backend_api.Domain.Repositories
 {
     public interface IUserRepository
     {
+        /**
+         * List the 
+         */
         Task<IEnumerable<User>> ListAsync();
         Task<User> GetAsync(int id);
         Task<User> GetUserByNameAsync(string name);

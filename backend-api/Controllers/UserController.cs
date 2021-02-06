@@ -9,7 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace backend_api.Controllers
 {
     /**
-     *  The user controller. Handles all incoming requests to get, add and update users.
+     * The user controller
+     * Handles all incoming requests to get, add and update users.
      */
     [Route("api/[controller]")]
     public class UserController : Controller 
@@ -54,6 +55,7 @@ namespace backend_api.Controllers
                 return BadRequest(ModelState.GetErrorMessages());
 
             var user = _mapper.Map<AddUserResource, User>(resource);
+            // users that are added through this api route are assigned to the 'common' role
             var result = await _userService.AddUserAsync(user, EApplicationRole.Common);
 
             if (!result.Success)
