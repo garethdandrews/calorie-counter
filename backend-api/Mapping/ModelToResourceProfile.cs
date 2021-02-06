@@ -13,8 +13,7 @@ namespace backend_api.Mapping
     {
         public ModelToResourceProfile()
         {
-            CreateMap<User, UserResource>()
-                .ForMember(u => u.Roles, opt => opt.MapFrom(u => u.UserRoles.Select(ur => ur.Role.Name)));
+            CreateMap<User, UserResource>();
             CreateMap<DiaryEntry, DiaryEntryResource>();
             CreateMap<FoodItem, FoodItemResource>();
 

@@ -6,6 +6,5 @@ namespace backend_api.Controllers.Resources.UserResources
     {
         public string Name { get; set; }
         public int CalorieTarget { get; set; }
-        public IEnumerable<string> Roles { get; set; }
     }
 }

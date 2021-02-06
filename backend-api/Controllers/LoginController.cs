@@ -45,7 +45,6 @@ namespace backend_api.Controllers
          /// bad request if credentials are invalid;
          /// otherwise, access token
          /// </returns>
-        [Route("/login")]
         [HttpPost]
         public async Task<IActionResult> LoginAsync([FromBody] UserCredentialsResource resource)
         {

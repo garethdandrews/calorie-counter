@@ -61,7 +61,10 @@ namespace backend_api
 
             services.Configure<TokenOptions>(Configuration.GetSection("TokenOptions"));
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
+
             var signingConfigurations = new SigningConfigurations(tokenOptions.Secret);
+            services.AddSingleton(signingConfigurations);
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(jwtBearerOptions =>
                         {
