@@ -1,3 +1,7 @@
+using System.Security.Cryptography;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
+
 namespace backend_api.Security.Tokens
 {
     public class SigningConfigurations

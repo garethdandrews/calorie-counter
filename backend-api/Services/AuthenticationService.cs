@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using backend_api.Domain.Security.Hashing;
 using backend_api.Domain.Security.Tokens;
 using backend_api.Domain.Services;
 using backend_api.Domain.Services.Communication;

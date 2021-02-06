@@ -1,5 +1,5 @@
 
-using backend_api.Domain.Security.Tokens.Security.Tokens;
+using backend_api.Domain.Security.Tokens;
 
 namespace backend_api.Domain.Services.Communication
 {
