@@ -69,7 +69,7 @@ namespace backend_api.Controllers
         /// bad request if token is invalid, expired or username does not exist;
         /// otherwise, access token
         /// </returns>
-        [Route("/token/refresh")]
+        [Route("token/refresh")]
         [HttpPost]
         public async Task<IActionResult> RefreshTokenAsync([FromBody] RefreshTokenResource resource)
         {
@@ -94,7 +94,7 @@ namespace backend_api.Controllers
         /// bad request if refresh token not provided
         /// no content
         /// </returns>
-        [Route("/token/revoke")]
+        [Route("token/revoke")]
         [HttpPost]
         public IActionResult RevokeToken([FromBody] RevokeTokenResource resource)
         {
