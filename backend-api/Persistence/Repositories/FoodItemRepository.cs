@@ -41,6 +41,7 @@ namespace backend_api.Persistence.Repositories
         {
             return await _context.FoodItems
                     .Include(x => x.DiaryEntry)
+                    .ThenInclude(x => x.FoodItems)
                     .FirstOrDefaultAsync(x => x.Id == id);
         }
 

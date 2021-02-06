@@ -175,8 +175,20 @@ namespace backend_api.Services
             if (existingFoodItem == null)
                 return new FoodItemResponse($"Food item {id} not found");
 
+            var diaryEntry = existingFoodItem.DiaryEntry;
+
             // remove the calories from the total calories
-            existingFoodItem.DiaryEntry.TotalCalories -= existingFoodItem.Calories;
+            diaryEntry.TotalCalories -= existingFoodItem.Calories;
+
+            // check if this food item is the last one in the diary entry
+            var foodItems = existingFoodItem.DiaryEntry.FoodItems;
+            if (foodItems.Count == 1 && foodItems[0].Id == existingFoodItem.Id)
+            {
+                // delete the diary entry if it is
+                var deleteResult = await _diaryEntryService.DeleteDiaryEntryAsync(diaryEntry.Id);
+                if (!deleteResult.Success)
+                    return new FoodItemResponse($"Failed to delete food item: {deleteResult}");
+            }
 
             // remove the food item from the database and save the changes to the diary entry
             try

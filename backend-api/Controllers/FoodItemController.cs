@@ -96,7 +96,6 @@ namespace backend_api.Controllers
         public async Task<IActionResult> DeleteAsync(int id)
         {
             var result = await _foodItemService.DeleteFoodItemAsync(id);
-
             if (!result.Success)
                 return BadRequest(result.Message);
 
