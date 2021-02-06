@@ -10,13 +10,13 @@ using Microsoft.AspNetCore.Mvc;
 namespace backend_api.Controllers
 {
      /// <summary>
-     /// The login controller
-     /// Handles the assigning, refreshing and revoking of access tokens
-     /// Access tokens are tokens that contain claims and are used by the API to validate specific user data
+     /// The login controller.
+     /// Handles the assigning, refreshing and revoking of access tokens.
+     /// Access tokens are tokens that contain claims and are used by the API to validate specific user data.
      /// Access tokens contain:
-     ///     - encoded token used to access api endpoints, that expire 30 seconds after creating
-     ///     - refresh token, an encoded token that expires 900 seconds after token is created
-     ///     - expiration date of the access token for validation
+     ///     - encoded token used to access api endpoints, that expire 30 seconds after creating,
+     ///     - refresh token, an encoded token that expires 900 seconds after token is created,
+     ///     - expiration date of the access token for validation,
      /// </summary>
     [Route("api/[controller]")]
     public class LoginController : Controller

@@ -7,9 +7,9 @@ using backend_api.Domain.Services.Communication;
 namespace backend_api.Services
 {
     /// <summary>
-    /// The authentication service
-    /// Handles the creation of tokens
-    /// Has methods to create access tokens, get refresh tokens and revoke refresh tokens
+    /// The authentication service.
+    /// Handles the creation of tokens.
+    /// Has methods to create access tokens, get refresh tokens and revoke refresh tokens.
     /// </summary>
     public class AuthenticationService : IAuthenticationService
     {
@@ -18,7 +18,7 @@ namespace backend_api.Services
         private readonly ITokenHandler _tokenHandler;
         
         /// <summary>
-        /// Handles the dependencies
+        /// Handles dependencies
         /// </summary>
         /// <param name="userService"></param>
         /// <param name="passwordHasher"></param>
@@ -43,11 +43,11 @@ namespace backend_api.Services
         {
             // check if the user exists and the password hash matches the password hash in the db
             var user = await _userService.GetUserByNameAsync(name);
-            if (user == null || !_passwordHasher.PasswordMatches(password, user.Password))
+            if (!user.Success || !_passwordHasher.PasswordMatches(password, user.User.Password))
                 return new TokenResponse("Invalid credentials");
 
             // create the access token
-            var token = _tokenHandler.CreateAccessToken(user);
+            var token = _tokenHandler.CreateAccessToken(user.User);
             return new TokenResponse(token);
         }
 
@@ -72,12 +72,12 @@ namespace backend_api.Services
                 return new TokenResponse("Expired refresh token");
 
             // validate the username
-            var user = await _userService.GetUserByNameAsync(name);
-            if (user == null)
+            var userResult = await _userService.GetUserByNameAsync(name);
+            if (!userResult.Success)
                 return new TokenResponse("User not found");
 
             // create the new access token
-            var accessToken = _tokenHandler.CreateAccessToken(user);
+            var accessToken = _tokenHandler.CreateAccessToken(userResult.User);
             return new TokenResponse(accessToken);
         }
 

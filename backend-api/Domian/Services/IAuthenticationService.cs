@@ -3,6 +3,11 @@ using backend_api.Domain.Services.Communication;
 
 namespace backend_api.Domain.Services
 {
+    /// <summary>
+    /// The authentication service
+    /// Handles the creation of tokens
+    /// Has methods to create access tokens, get refresh tokens and revoke refresh tokens
+    /// </summary>
     public interface IAuthenticationService
     {
         /// <summary>

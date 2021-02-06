@@ -12,6 +12,13 @@ namespace backend_api.Security.Hashing
     /// </summary>
     public class PasswordHasher : IPasswordHasher
     {
+        /// <summary>
+        /// Hashes a password
+        /// </summary>
+        /// <param name="password"></param>
+        /// <returns>
+        /// The hashed password
+        /// </returns>
         public string HashPassword(string password)
         {
             byte[] salt;
@@ -31,6 +38,14 @@ namespace backend_api.Security.Hashing
             return Convert.ToBase64String(dst);
         }
 
+        /// <summary>
+        /// Checks if the provided password matches the hashed password
+        /// </summary>
+        /// <param name="providedPassword"></param>
+        /// <param name="passwordHash"></param>
+        /// <returns>
+        /// boolean
+        /// </returns>
         public bool PasswordMatches(string providedPassword, string passwordHash)
         {
             byte[] buffer4;
@@ -58,6 +73,14 @@ namespace backend_api.Security.Hashing
             return ByteArraysEqual(buffer3, buffer4);
         }
 
+        /// <summary>
+        /// Checks if two given byte arrays are equal
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns>
+        /// boolean
+        /// </returns>
         [MethodImpl(MethodImplOptions.NoOptimization)]
         private bool ByteArraysEqual(byte[] a, byte[] b)
         {
