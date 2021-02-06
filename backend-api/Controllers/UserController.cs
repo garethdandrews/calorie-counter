@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace backend_api.Controllers
 {
+    /**
+     *  The user controller. Handles all incoming requests to get, add and update users.
+     */
     [Route("api/[controller]")]
     public class UserController : Controller 
     {
@@ -20,6 +23,11 @@ namespace backend_api.Controllers
             _mapper = mapper;
         }
 
+        /**
+         * Get a user by ID
+         * Return: bad request response if there was an issue retreiving the user
+         * Return: success response
+         */
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAsync(int id)
         {
@@ -32,6 +40,13 @@ namespace backend_api.Controllers
             return Ok(userResource);
         }
 
+        /**
+         * Add a user
+         * Parameters: username (string) and password (string)
+         * Return: bad request if parameters are not present
+         * Return: bad request if there was an issue saving the user to the db
+         * Return: success response
+         */
         [HttpPost]
         public async Task<IActionResult> PostAsync([FromBody] AddUserResource resource)
         {
@@ -48,6 +63,13 @@ namespace backend_api.Controllers
             return Ok(userResource);
         }
 
+        /**
+         * Update a user
+         * Parameters: calorie target (int)
+         * Return: bad request if parameter is not present
+         * Return: bad request if there was an issue updating the user in the db
+         * Return: success response
+         */
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAsync(int id, [FromBody] UpdateUserResource resource)
         {
