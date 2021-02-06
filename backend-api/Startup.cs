@@ -1,9 +1,13 @@
 
 using AutoMapper;
 using backend_api.Domain.Repositories;
+using backend_api.Domain.Security.Hashing;
+using backend_api.Domain.Security.Tokens;
 using backend_api.Domain.Services;
 using backend_api.Persistence.Contexts;
 using backend_api.Persistence.Repositories;
+using backend_api.Security.Hashing;
+using backend_api.Security.Tokens;
 using backend_api.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -42,11 +46,33 @@ namespace backend_api
             services.AddScoped<IDiaryEntryRepository, DiaryEntryRepository>();
             services.AddScoped<IFoodItemRepository, FoodItemRepository>();
 
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            services.AddSingleton<IPasswordHasher, PasswordHasher>();
+			services.AddSingleton<ITokenHandler, TokenHandler>();
+
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IDiaryEntryService, DiaryEntryService>();
             services.AddScoped<IFoodItemService, FoodItemService>();
 
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.Configure<TokenOptions>(Configuration.GetSection("TokenOptions"));
+            var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
+            var signingConfigurations = new SigningConfigurations(tokenOptions.Secret);
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(jwtBearerOptions =>
+                        {
+                            jwtBearerOptions.TokenValidationParameters = new TokenValidationParameters()
+                            {
+                                ValidateAudience = true,
+                                ValidateLifetime = true,
+                                ValidateIssuerSigningKey = true,
+                                ValidIssuer = tokenOptions.Issuer,
+                                ValidAudience = tokenOptions.Audience,
+                                IssuerSigningKey = signingConfigurations.SecurityKey,
+                                ClockSkew = TimeSpan.Zero
+                            };
+                        });
 
             services.AddAutoMapper(typeof(Startup));
         }
