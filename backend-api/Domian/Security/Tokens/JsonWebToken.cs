@@ -2,6 +2,12 @@ using System;
 
 namespace backend_api.Domain.Security.Tokens
 {
+    /// <summary>
+    /// Access tokens contain:
+    ///     - encoded token used to access api endpoints, that expire 30 seconds after creating,
+    ///     - refresh token, an encoded token that expires 900 seconds after token is created,
+    ///     - expiration date of the access token for validation,
+    /// </summary>
     public abstract class JsonWebToken
     {
         public string Token { get; protected set; }
