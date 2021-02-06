@@ -8,18 +8,36 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace backend_api.Controllers
 {
+    /// <summary>
+     /// The food item controller.
+     /// Handles all incoming requests to add and update a food item
+     /// </summary>
     [Route("api/[controller]")]
     public class FoodItemController : Controller
     {
         private readonly IFoodItemService _foodItemService;
         private readonly IMapper _mapper;
 
+        /// <summary>
+        /// Handles dependencies
+        /// </summary>
+        /// <param name="foodItemService"></param>
+        /// <param name="mapper"></param>
         public FoodItemController(IFoodItemService foodItemService, IMapper mapper)
         {
             _foodItemService = foodItemService;
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Add a food item
+        /// </summary>
+        /// <param name="resource">userid (int), stringDate (date in format dd-mm-yyy), name (string), calories (int)</param>
+        /// <returns>
+        /// bad request if parameters are invalid;
+        /// bad request if there was an issue adding the food item;
+        /// success response with the food item
+        /// </returns>
         [HttpPost]
         public async Task<IActionResult> PostAsync([FromBody] AddFoodItemResource resource)
         {
@@ -35,6 +53,16 @@ namespace backend_api.Controllers
             return Ok(foodItemResource);
         }
 
+        /// <summary>
+        /// Update a food item
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="resource">name (string), calories (int)</param>
+        /// <returns>
+        /// bad request if parameters are invalid;
+        /// bad request if there was an issue updating the food item;
+        /// success response with the food item
+        /// </returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAsync(int id, [FromBody] UpdateFoodItemResource resource)
         {
@@ -51,6 +79,14 @@ namespace backend_api.Controllers
             return Ok(foodItemResource);
         }
 
+        /// <summary>
+        /// Deletes a food item
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>
+        /// bad request if there was an issue deleting the food item;
+        /// success response with the food item
+        /// </returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAsync(int id)
         {
