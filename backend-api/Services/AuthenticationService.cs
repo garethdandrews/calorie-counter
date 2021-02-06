@@ -2,7 +2,6 @@ using System.Threading.Tasks;
 using backend_api.Domain.Security.Tokens;
 using backend_api.Domain.Services;
 using backend_api.Domain.Services.Communication;
-using Microsoft.AspNetCore.Identity;
 
 namespace backend_api.Services
 {
@@ -24,9 +23,7 @@ namespace backend_api.Services
             var user = await _userService.GetUserByNameAsync(name);
 
             if (user == null || !_passwordHasher.PasswordMatches(password, user.Password))
-            {
                 return new TokenResponse("Invalid credentials");
-            }
 
             var token = _tokenHandler.CreateAccessToken(user);
 
