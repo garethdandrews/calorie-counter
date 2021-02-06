@@ -1,5 +1,8 @@
 namespace backend_api.Security.Tokens
 {
+	/// <summary>
+	/// The options are loaded into this class from the appsettings by dependency injection
+	/// </summary>
     public class TokenOptions
 	{
 		public string Audience { get; set; }

@@ -3,6 +3,9 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace backend_api.Security.Tokens
 {
+    /// <summary>
+    /// Represents the token signature which is needed to validate the token
+    /// </summary>
     public class SigningConfigurations
     {        
         public SecurityKey SecurityKey { get; } // A 2048 bits security key for validating token signatures
