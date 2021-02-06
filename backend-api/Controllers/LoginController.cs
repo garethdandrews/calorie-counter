@@ -18,6 +18,7 @@ namespace backend_api.Controllers
      ///     - refresh token, an encoded token that expires 900 seconds after token is created,
      ///     - expiration date of the access token for validation,
      /// </summary>
+    [ApiController]
     [Route("api/[controller]")]
     public class LoginController : Controller
     {

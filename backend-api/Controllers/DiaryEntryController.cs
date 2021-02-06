@@ -4,6 +4,7 @@ using backend_api.Controllers.Resources.DiaryEntryResources;
 using backend_api.Domain.Models;
 using backend_api.Domain.Services;
 using backend_api.Extensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend_api.Controllers
@@ -12,6 +13,7 @@ namespace backend_api.Controllers
     /// The diary entry controller.
     /// Handles all incoming requests to get a users diary entry
     /// </summary>
+    [ApiController]
     [Route("api/[controller]")]
     public class DiaryEntryController : Controller 
     {
@@ -40,6 +42,7 @@ namespace backend_api.Controllers
         /// success response with the diary entry
         /// </returns>
         [HttpGet("{userId}/{stringDate}")]
+        [Authorize]
         public async Task<IActionResult> GetAsync(int userId, string stringDate)
         {
             if (!ModelState.IsValid)

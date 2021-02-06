@@ -12,6 +12,7 @@ namespace backend_api.Controllers
      /// The user controller.
      /// Handles all incoming requests to get, add and update users.
      /// </summary>
+    [ApiController]
     [Route("api/[controller]")]
     public class UserController : Controller 
     {

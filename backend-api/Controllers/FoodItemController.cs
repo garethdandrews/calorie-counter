@@ -4,14 +4,16 @@ using backend_api.Controllers.Resources.FoodItemResources;
 using backend_api.Domain.Models;
 using backend_api.Domain.Services;
 using backend_api.Extensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend_api.Controllers
 {
     /// <summary>
-     /// The food item controller.
-     /// Handles all incoming requests to add and update a food item
-     /// </summary>
+    /// The food item controller.
+    /// Handles all incoming requests to add and update a food item
+    /// </summary>
+    [ApiController]
     [Route("api/[controller]")]
     public class FoodItemController : Controller
     {
@@ -39,6 +41,7 @@ namespace backend_api.Controllers
         /// success response with the food item
         /// </returns>
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> PostAsync([FromBody] AddFoodItemResource resource)
         {
             if (!ModelState.IsValid)
@@ -64,6 +67,7 @@ namespace backend_api.Controllers
         /// success response with the food item
         /// </returns>
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> PutAsync(int id, [FromBody] UpdateFoodItemResource resource)
         {
             if (!ModelState.IsValid)
@@ -88,6 +92,7 @@ namespace backend_api.Controllers
         /// success response with the food item
         /// </returns>
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteAsync(int id)
         {
             var result = await _foodItemService.DeleteFoodItemAsync(id);
