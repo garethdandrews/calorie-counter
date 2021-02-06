@@ -1,4 +1,5 @@
 
+using System;
 using AutoMapper;
 using backend_api.Domain.Repositories;
 using backend_api.Domain.Security.Hashing;
@@ -9,6 +10,7 @@ using backend_api.Persistence.Repositories;
 using backend_api.Security.Hashing;
 using backend_api.Security.Tokens;
 using backend_api.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -18,6 +20,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 namespace backend_api
@@ -49,7 +52,7 @@ namespace backend_api
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddSingleton<IPasswordHasher, PasswordHasher>();
-			services.AddSingleton<ITokenHandler, TokenHandler>();
+			services.AddSingleton<ITokenHandler, Security.Tokens.TokenHandler>();
 
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
@@ -91,6 +94,7 @@ namespace backend_api
 
             app.UseRouting();
 
+			app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
