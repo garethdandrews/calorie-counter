@@ -10,12 +10,22 @@ using backend_api.Services.Helpers;
 
 namespace backend_api.Services
 {
+    /// <summary>
+    /// The diary entry service.
+    /// Handles retreiving, creating, updating and deleting diary entries.
+    /// </summary>
     public class DiaryEntryService : IDiaryEntryService
     {
         private IDiaryEntryRepository _diaryEntryRepository;
         private readonly IUserService _userService;
         private readonly IUnitOfWork _unitOfWork;
 
+        /// <summary>
+        /// Handles dependencies
+        /// </summary>
+        /// <param name="diaryEntryRepository"></param>
+        /// <param name="userService"></param>
+        /// <param name="unitOfWork"></param>
         public DiaryEntryService(IDiaryEntryRepository diaryEntryRepository, IUserService userService, IUnitOfWork unitOfWork)
         {
             _diaryEntryRepository = diaryEntryRepository;
@@ -23,14 +33,18 @@ namespace backend_api.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<DiaryEntry>> ListAsync()
-        {
-            return await _diaryEntryRepository.ListAsync();
-        }
-
-        // validates and converts stringDate to DateTime
+        /// <summary>
+        /// Validates and converts stringDate to DateTime to call the GetDiaryEntryAsync(int userId, DateTime date) method
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="stringDate"></param>
+        /// <returns>
+        /// Unsuccessful DiaryEntryResponse if the stringDate is not in the format dd-mm-yyyy;
+        /// A call to the GetDiaryEntry method with the converted date object
+        /// </returns>
         public async Task<DiaryEntryResponse> GetDiaryEntryAsync(int userId, string stringDate)
         {
+            // conver the string date to a DateTime object
             DateTime date;
             try
             {
@@ -41,38 +55,55 @@ namespace backend_api.Services
                 return new DiaryEntryResponse(e.Message);
             }
 
+            // call the GetDiaryEntryAsync method with the new date object
             return await GetDiaryEntryAsync(userId, date);
         }
 
+        /// <summary>
+        /// Gets the users diary entry for a given date
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="date"></param>
+        /// <returns>
+        /// Unsuccessful DiaryEntryReponse if the user does not exist;
+        /// Unsuccessful DiaryEntryResponse if the user does not have a diary entry for that date;
+        /// Successful DiaryEntryResponse with the diary entry
+        /// </returns>
         public async Task<DiaryEntryResponse> GetDiaryEntryAsync(int userId, DateTime date)
         {
             // validate userId
             var userResult = await _userService.GetUserAync(userId);
-
             if (!userResult.Success)
                 return new DiaryEntryResponse(userResult.Message);
 
             var diaryEntryResult = await GetUsersDiaryEntryForDateAsync(userId, date);
-
             if (!diaryEntryResult.Success)
                 return diaryEntryResult;
 
             var diaryEntryWithFoodItems = await _diaryEntryRepository.GetAsync(diaryEntryResult.DiaryEntry.Id);
-
             return new DiaryEntryResponse(diaryEntryWithFoodItems);
         }
 
+        /// <summary>
+        /// Adds a diary entry for the given user and date
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="date"></param>
+        /// <returns>
+        /// Unsuccessful DiaryEntryResponse if the user does not exist;
+        /// Unsuccessful DiaryEntryResponse if the user already has a diary entry for that date;
+        /// Unsuccessful DiaryEntryResponse if there was an issue adding the diary entry to the database;
+        /// Successful DiaryEntryResponse with the diary entry
+        /// </returns>
         public async Task<DiaryEntryResponse> AddDiaryEntryAsync(int userId, DateTime date)
         {
             // validate userId
             var userResult = await _userService.GetUserAync(userId);
-
             if (!userResult.Success)
                 return new DiaryEntryResponse(userResult.Message);
             
             // check if the user already has a diary entry for that date
             var diaryEntryResult = await GetUsersDiaryEntryForDateAsync(userId, date);
-
             if (diaryEntryResult.Success)
                 return new DiaryEntryResponse($"User {userId} already has a diary for that day");
             
@@ -84,6 +115,7 @@ namespace backend_api.Services
                 CalorieTarget = userResult.User.CalorieTarget
             };
 
+            // add to the database
             try
             {
                 await _diaryEntryRepository.AddAsync(diaryEntry);
@@ -97,54 +129,36 @@ namespace backend_api.Services
             return new DiaryEntryResponse(diaryEntry);
         }
 
+        /// <summary>
+        /// Gets the users diary entry for a given date
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="date"></param>
+        /// <returns>
+        /// Unsuccessful DiaryEntryResponse if the user has no diary entry for the date;
+        /// Successful DiaryEntryResponse with the diary entry
+        /// </returns>
         public async Task<DiaryEntryResponse> GetUsersDiaryEntryForDateAsync(int userId, DateTime date)
         {
             var diaryEntry = await _diaryEntryRepository.GetUsersDiaryEntryForDate(userId, date);
-
             if (diaryEntry == null)
                 return new DiaryEntryResponse($"User {userId} has no diary entry for that day");
 
             return new DiaryEntryResponse(diaryEntry);
         }
 
-        public async Task<DiaryEntryResponse> UpdateDiaryEntryAsync(int id, int calorieTarget)
-        {
-            var existingDiaryEntry = await _diaryEntryRepository.GetAsync(id);
-
-            if (existingDiaryEntry == null)
-                return new DiaryEntryResponse($"Diary entry {id} not found");
-
-            existingDiaryEntry.CalorieTarget = calorieTarget;
-
-            try
-            {
-                _diaryEntryRepository.Update(existingDiaryEntry);
-                await _unitOfWork.CompleteAsync();
-            }
-            catch (Exception e)
-            {
-                return new DiaryEntryResponse($"An error occurred when updating diary entry {id}: {e}");
-            }
-
-            return new DiaryEntryResponse(existingDiaryEntry);
-        }
-
-        public async Task<DiaryEntryResponse> UpdateCalorieTargetAsync(int userId, int calorieTarget)
-        {
-            var diaryEntry = await GetUsersDiaryEntryForDateAsync(userId, DateTime.Now.Date);
-
-            if (!diaryEntry.Success)
-                return diaryEntry;
-
-            var updateDiaryEntryResult = await UpdateDiaryEntryAsync(diaryEntry.DiaryEntry.Id, calorieTarget);
-
-            return updateDiaryEntryResult;
-        }
-
+        /// <summary>
+        /// Deletes a diary entry
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>
+        /// Unsuccessful DiaryEntryResponse if the diary does not exist;
+        /// Unsuccessful DiaryEntryResponse if there was an issue removing the diary entry from the database;
+        /// Successful DiaryEntryResponse with the diary entry
+        /// </returns>
         public async Task<DiaryEntryResponse> DeleteDiaryEntryAsync(int id)
         {
             var existingDiaryEntry = await _diaryEntryRepository.GetAsync(id);
-
             if (existingDiaryEntry == null)
                 return new DiaryEntryResponse($"Diary entry {id} not found");
 
@@ -152,13 +166,13 @@ namespace backend_api.Services
             {
                 _diaryEntryRepository.Remove(existingDiaryEntry);
                 await _unitOfWork.CompleteAsync();
-
-                return new DiaryEntryResponse(existingDiaryEntry);
             }
             catch (Exception e)
             {
                 return new DiaryEntryResponse($"An error occurred when deleting diary entry {id}: {e}");
             }
+
+            return new DiaryEntryResponse(existingDiaryEntry);
         }
     }
 }

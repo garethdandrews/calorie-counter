@@ -11,6 +11,10 @@ using backend_api.Services.Helpers;
 
 namespace backend_api.Services
 {
+    /// <summary>
+    /// The food item service.
+    /// Handles the creating, updating and deleting food items
+    /// </summary>
     public class FoodItemService : IFoodItemService
     {
         private readonly IFoodItemRepository _foodItemRepository;
@@ -18,6 +22,13 @@ namespace backend_api.Services
         private readonly IDiaryEntryService _diaryEntryService;
         private readonly IUnitOfWork _unitOfWork;
 
+        /// <summary>
+        /// Handles dependencies
+        /// </summary>
+        /// <param name="foodItemRepository"></param>
+        /// <param name="userService"></param>
+        /// <param name="diaryEntryService"></param>
+        /// <param name="unitOfWork"></param>
         public FoodItemService(IFoodItemRepository foodItemRepository, IUserService userService, IDiaryEntryService diaryEntryService, IUnitOfWork unitOfWork)
         {
             _foodItemRepository = foodItemRepository;
@@ -26,16 +37,24 @@ namespace backend_api.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<FoodItem>> ListAsync()
-        {
-            return await _foodItemRepository.ListAsync();
-        }
-
+        /// <summary>
+        /// Adds a new food item to a users diary entry for a given date.
+        /// If the user has no diary entry for that date, then one will be created.
+        /// Updates the total calories for the diary entry.
+        /// </summary>
+        /// <param name="resource"></param>
+        /// <returns>
+        /// Unsuccessful FoodItemResponse if the user does not exist;
+        /// Unsuccessful FoodItemResponse if the string date is not in the format dd-mm-yyyy;
+        /// Unsuccessful FoodItemResponse if the date is in the future;
+        /// Unsuccessful FoodItemResponse if there was an issue adding a new diary entry;
+        /// Unsuccessful FoodItemResponse if there was an issue adding the food item to the diary entry;
+        /// Successful FoodItemResponse with the food item
+        /// </returns>
         public async Task<FoodItemResponse> AddFoodItemAsync(AddFoodItemResource resource)
         {
             // validate userId
             var userResult = await _userService.GetUserAync(resource.UserId);
-
             if (!userResult.Success)
                 return new FoodItemResponse(userResult.Message);
 
@@ -81,8 +100,10 @@ namespace backend_api.Services
                 User = userResult.User
             };
 
+            // update the total calories for the diary entry
             diaryEntry.TotalCalories += resource.Calories;
 
+            // save the new food item and the changes to the diary entry
             try
             {
                 await _foodItemRepository.AddAsync(foodItem);
@@ -96,19 +117,34 @@ namespace backend_api.Services
             return new FoodItemResponse(foodItem);
         }
 
+        /// <summary>
+        /// Updates an existing food item in the database.
+        /// Updates the total calories for the diary entry the food item belongs to.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="foodItem"></param>
+        /// <returns>
+        /// Unsuccessful FoodItemResponse if food item does not exist;
+        /// Unsuccessful FoodItemResponse if there was an issue updating the food item in the database;
+        /// Successful FoodItemResponse with the food item
+        /// </returns>
         public async Task<FoodItemResponse> UpdateFoodItemAsync(int id, FoodItem foodItem)
         {
+            // check if the food item exists
             var existingFoodItem = await _foodItemRepository.GetAsync(id);
-
             if (existingFoodItem == null)
                 return new FoodItemResponse($"Food item {id} not found");
 
+            // remove the old calories from the total calories
             existingFoodItem.DiaryEntry.TotalCalories -= existingFoodItem.Calories;
+            // add the new calories to the total calories
             existingFoodItem.DiaryEntry.TotalCalories += foodItem.Calories;
 
+            // update the name and calories of the old food item
             existingFoodItem.Name = foodItem.Name;
             existingFoodItem.Calories = foodItem.Calories;
 
+            // save the changes
             try
             {
                 _foodItemRepository.Update(existingFoodItem);
@@ -122,27 +158,38 @@ namespace backend_api.Services
             return new FoodItemResponse(existingFoodItem);
         }
 
+        /// <summary>
+        /// Delete a food item from the database.
+        /// Updates the total calories for the diary entry the food item belongs to.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>
+        /// Unsuccessful FoodItemResponse if the food item does not exist;
+        /// Unsuccessful FoodItemResponse if there was an issue removing the food item from the database;
+        /// Successful FoodItemResponse with the food item
+        /// </returns>
         public async Task<FoodItemResponse> DeleteFoodItemAsync(int id)
         {
+            // check if the food item exists
             var existingFoodItem = await _foodItemRepository.GetAsync(id);
-
             if (existingFoodItem == null)
                 return new FoodItemResponse($"Food item {id} not found");
 
-            // CHECK IF THIS WORKS - may need to get the diary entry and then update it
+            // remove the calories from the total calories
             existingFoodItem.DiaryEntry.TotalCalories -= existingFoodItem.Calories;
 
+            // remove the food item from the database and save the changes to the diary entry
             try
             {
                 _foodItemRepository.Remove(existingFoodItem);
                 await _unitOfWork.CompleteAsync();
-
-                return new FoodItemResponse(existingFoodItem);
             }
             catch (Exception e)
             {
                 return new FoodItemResponse($"An error occurred when deleting diary entry {id}: {e}");
             }
+
+            return new FoodItemResponse(existingFoodItem);
         }
     }
 }

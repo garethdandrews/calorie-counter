@@ -4,6 +4,14 @@ namespace backend_api.Services.Helpers
 {
     public static class StringDateHelper
     {
+        /// <summary>
+        /// Convert the string date to a DateTime object.
+        /// Throws an error if the string date is not in the format dd-mm-yyyy
+        /// </summary>
+        /// <param name="stringDate"></param>
+        /// <returns>
+        /// The date as a DateTime object
+        /// </returns>
         public static DateTime ConverStringDateToDate(string stringDate)
         {
             DateTime date;
