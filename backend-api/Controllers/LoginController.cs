@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using AutoMapper;
 using backend_api.Controllers.Resources.TokenResources;
@@ -55,7 +56,7 @@ namespace backend_api.Controllers
 
             if (!result.Success)
                 return BadRequest(result.Message);
-
+            
             var accessTokenResource = _mapper.Map<AccessToken, AccessTokenResource>(result.AccessToken);
             return Ok(accessTokenResource);
         }
