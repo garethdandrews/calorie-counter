@@ -1,20 +1,27 @@
 {
   "name": "frontend",
   "version": "0.1.0",
+<<<<<<< HEAD
+=======
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/garethdandrews/calorie-counter.git"
+  },
+  "license": "MIT",
+  "scripts": {
+    "start": "webpack-dev-server --open"
+  },
+>>>>>>> main
   "dependencies": {
-    "@testing-library/jest-dom": "^5.11.9",
-    "@testing-library/react": "^11.2.5",
-    "@testing-library/user-event": "^12.6.3",
     "formik": "^1.5.2",
     "history": "^4.9.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.0.0",
-    "react-scripts": "4.0.2",
     "rxjs": "^6.3.3",
-    "web-vitals": "^1.1.0",
     "yup": "^0.27.0"
   },
+<<<<<<< HEAD
   "scripts": {
     "start": "webpack-dev-server --open",
     "build": "react-scripts build",
@@ -39,8 +46,9 @@
       "last 1 safari version"
     ]
   },
+=======
+>>>>>>> main
   "devDependencies": {
-    "babel-install": "2.1.0",
     "@babel/core": "^7.4.3",
     "@babel/preset-env": "^7.4.3",
     "@babel/preset-react": "^7.0.0",
