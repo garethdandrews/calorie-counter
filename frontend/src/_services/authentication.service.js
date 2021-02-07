@@ -13,16 +13,18 @@ export const authenticationService = {
 };
 
 function login(username, password) {
+    const myHeaders = new Headers();
+    myHeaders.append('content-type', 'application/json');
+
+    var raw = JSON.stringify({"Name":username,"Password":password});
+
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-            "Name": username,
-            "Password": password 
-        })
+        headers: myHeaders,
+        body: raw
     };
 
-    return fetch(`${config.apiUrl}/login`, requestOptions)
+    return fetch('http://localhost:8080/api/login', requestOptions) //`${config.apiUrl}/login`
         .then(handleResponse)
         .then(user => {
             // store user details and jwt token in local storage to keep user logged in between page refreshes

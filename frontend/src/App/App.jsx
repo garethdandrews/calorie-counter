@@ -3,6 +3,7 @@ import { Router, Route, Link } from 'react-router-dom';
 
 import { history } from '@/_helpers';
 import { authenticationService } from '@/_services';
+import { LoginPage } from '@/LoginPage';
 
 class App extends React.Component {
     constructor(props) {
@@ -26,7 +27,7 @@ class App extends React.Component {
                         <nav className="navbar navbar-expand navbar-dark bg-dark">
                             <div className="navbar-nav">
                                 <Link to="/" className="nav-item nav-link">Home</Link>
-                                {/* <a onClick={this.logout} className="nav-item nav-link">Logout</a> */}
+                                
                             </div>
                         </nav>
                     }
@@ -34,7 +35,7 @@ class App extends React.Component {
                         <div className="container">
                             <div className="row">
                                 <div className="col-md-6 offset-md-3">
-                                    {/* <PrivateRoute exact path="/" component={HomePage} /> */}
+                                    
                                     <Route path="/login" component={LoginPage} />
                                 </div>
                             </div>
