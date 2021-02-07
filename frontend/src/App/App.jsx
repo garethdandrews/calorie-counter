@@ -1,7 +1,7 @@
 import React from 'react';
 import { Router, Route, Link } from 'react-router-dom';
 
-import { history } from '../_helpers';
+import { history } from '@/_helpers';
 
 class App extends React.Component {
   constructor(props) {
