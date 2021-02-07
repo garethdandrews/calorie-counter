@@ -21,7 +21,16 @@ services:
     networks:
       - postgres
     restart: on-failure
-
+    
+  backend-api:
+    container_name: backend-api
+    build: backend-api
+    ports:
+      - 8080:80
+    depends_on:
+      - postgres
+    networks:
+      - postgres
 
 networks:
   postgres:
