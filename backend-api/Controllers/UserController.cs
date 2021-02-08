@@ -39,10 +39,10 @@ namespace backend_api.Controllers
          /// bad request response if there was an issue retreiving the user;
          /// success response with user
          /// </returns>
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetAsync(int id)
+        [HttpGet("{username}")]
+        public async Task<IActionResult> GetAsync(string username)
         {
-            var result = await _userService.GetUserAync(id);
+            var result = await _userService.GetUserByNameAsync(username);
 
             if (!result.Success)
                 return BadRequest(result.Message);
