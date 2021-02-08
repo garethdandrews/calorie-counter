@@ -43,6 +43,7 @@ namespace backend_api.Security.Tokens
         {
             var refreshToken = BuildRefreshToken();
             var accessToken = BuildAccessToken(user, refreshToken);
+            accessToken.Name = user.Name;
             _refreshTokens.Add(refreshToken);
 
             return accessToken;
