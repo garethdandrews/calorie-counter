@@ -5,7 +5,7 @@ namespace backend_api.Controllers.Resources.UserResources
     public class UserCredentialsResource
     {
         [Required]
-        public string Name { get; set; }
+        public string Username { get; set; }
 
         [Required]
         public string Password { get; set; }

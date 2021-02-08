@@ -54,7 +54,7 @@ namespace backend_api.Services
         public async Task<FoodItemResponse> AddFoodItemAsync(AddFoodItemResource resource)
         {
             // validate userId
-            var userResult = await _userService.GetUserAync(resource.UserId);
+            var userResult = await _userService.GetUserByNameAsync(resource.Username);
             if (!userResult.Success)
                 return new FoodItemResponse(userResult.Message);
 
@@ -75,22 +75,22 @@ namespace backend_api.Services
             DiaryEntry diaryEntry;
 
             // check if user has a diary entry for the day
-            var existingDiaryResult = await _diaryEntryService.GetUsersDiaryEntryForDateAsync(resource.UserId, date);
+            var existingDiaryResult = await _diaryEntryService.GetUsersDiaryEntryForDateAsync(userResult.User.Id, date);
 
-            if (!existingDiaryResult.Success) 
+            if (!existingDiaryResult.Success)
             {   // no diary entry for that day, create one
-                var diaryEntryResult = await _diaryEntryService.AddDiaryEntryAsync(resource.UserId, date);
-                
+                var diaryEntryResult = await _diaryEntryService.AddDiaryEntryAsync(userResult.User.Id, date);
+
                 if (!diaryEntryResult.Success)
                     return new FoodItemResponse($"Failed to add a new food item: {diaryEntryResult.Message}");
 
                 diaryEntry = diaryEntryResult.DiaryEntry;
             }
-            else 
+            else
             {   // user has a diary entry for that day
                 diaryEntry = existingDiaryResult.DiaryEntry;
             }
-            
+
             // create food item
             FoodItem foodItem = new FoodItem
             {
@@ -113,7 +113,7 @@ namespace backend_api.Services
             {
                 return new FoodItemResponse($"An error occurred when saving the food item: {e}");
             }
-            
+
             return new FoodItemResponse(foodItem);
         }
 

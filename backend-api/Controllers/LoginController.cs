@@ -52,7 +52,7 @@ namespace backend_api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState.GetErrorMessages());
 
-            var result = await _authenticationService.CreateAccessTokenAsync(resource.Name, resource.Password);
+            var result = await _authenticationService.CreateAccessTokenAsync(resource.Username, resource.Password);
 
             if (!result.Success)
                 return BadRequest(result.Message);
@@ -77,7 +77,7 @@ namespace backend_api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState.GetErrorMessages());
 
-            var result = await _authenticationService.RefreshTokenAsync(resource.Token, resource.Name);
+            var result = await _authenticationService.RefreshTokenAsync(resource.Token, resource.Username);
 
             if (!result.Success)
                 return BadRequest(result.Message);

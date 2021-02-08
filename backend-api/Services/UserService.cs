@@ -77,7 +77,7 @@ namespace backend_api.Services
         public async Task<UserResponse> AddUserAsync(User user, params EApplicationRole[] userRoles)
         {
             // check if the user already exists
-            var existingUserResult = await GetUserByNameAsync(user.Name);
+            var existingUserResult = await GetUserByNameAsync(user.Username);
             if (existingUserResult.Success)
                 return new UserResponse("Username is already in use");
 

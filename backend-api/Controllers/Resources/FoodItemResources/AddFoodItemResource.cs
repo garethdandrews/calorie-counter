@@ -5,7 +5,7 @@ namespace backend_api.Controllers.Resources.FoodItemResources
     public class AddFoodItemResource
     {
         [Required]
-        public int UserId { get; set; }
+        public string Username { get; set; }
 
         [Required]
         public string StringDate { get; set; }

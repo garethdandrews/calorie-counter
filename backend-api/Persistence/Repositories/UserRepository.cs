@@ -49,12 +49,12 @@ namespace backend_api.Persistence.Repositories
         /// <returns>
         /// A user for the given name, returns null if no user found
         /// </returns>
-        public async Task<User> GetUserByNameAsync(string name)
+        public async Task<User> GetUserByNameAsync(string username)
         {
             return await _context.Users
                     .Include(x => x.UserRoles)
                     .ThenInclude(x => x.Role)
-                    .SingleOrDefaultAsync(x => x.Name == name);
+                    .SingleOrDefaultAsync(x => x.Username == username);
         }
 
         /// <summary>

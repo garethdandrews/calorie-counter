@@ -6,7 +6,7 @@ namespace backend_api.Controllers.Resources.UserResources
     {
         [Required]        
         [StringLength(20, ErrorMessage = "Must be between 6 and 30 characters", MinimumLength = 5)]        
-        public string Name { get; set; }
+        public string Username { get; set; }
 
         [Required]        
         [StringLength(20, ErrorMessage = "Must be between 6 and 30 characters", MinimumLength = 5)]   

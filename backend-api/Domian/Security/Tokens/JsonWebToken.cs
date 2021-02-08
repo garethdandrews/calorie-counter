@@ -10,7 +10,7 @@ namespace backend_api.Domain.Security.Tokens
     /// </summary>
     public abstract class JsonWebToken
     {
-        public string Name { get; set; }
+        public string Username { get; set; }
         public string Token { get; protected set; }
         public long Expiration { get; protected set; }
 

@@ -43,7 +43,7 @@ namespace backend_api.Security.Tokens
         {
             var refreshToken = BuildRefreshToken();
             var accessToken = BuildAccessToken(user, refreshToken);
-            accessToken.Name = user.Name;
+            accessToken.Username = user.Username;
             _refreshTokens.Add(refreshToken);
 
             return accessToken;
@@ -139,7 +139,7 @@ namespace backend_api.Security.Tokens
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.Sub, user.Name)
+                new Claim(JwtRegisteredClaimNames.Sub, user.Username)
             };
 
             foreach (var userRole in user.UserRoles)

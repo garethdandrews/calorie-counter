@@ -26,7 +26,7 @@ namespace backend_api.Domain.Repositories
         /// <returns>
         /// A list of users
         /// </returns>
-        Task<User> GetUserByNameAsync(string name);
+        Task<User> GetUserByNameAsync(string username);
 
         /// <summary>
         /// Adds a user and its roles to the database
