@@ -46,6 +46,7 @@ namespace backend_api.Services
         /// <returns>
         /// Unsuccessful FoodItemResponse if the user does not exist;
         /// Unsuccessful FoodItemResponse if the string date is not in the format dd-mm-yyyy;
+        /// Unsuccessful FoodItemResponse if the date is in the future;
         /// Unsuccessful FoodItemResponse if there was an issue adding a new diary entry;
         /// Unsuccessful FoodItemResponse if there was an issue adding the food item to the diary entry;
         /// Successful FoodItemResponse with the food item
@@ -67,6 +68,9 @@ namespace backend_api.Services
             {
                 return new FoodItemResponse(e.Message);
             }
+
+            if (date.Date >= DateTime.Now.AddDays(1))
+                return new FoodItemResponse("Can't add a food item in the future");
 
             DiaryEntry diaryEntry;
 
