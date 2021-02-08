@@ -1,20 +1,21 @@
 import React from 'react';
 
-import { userService, authenticationService } from '@/_services';
+import { diaryEntryService, authenticationService } from '@/_services';
 
 class HomePage extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            currentUser: authenticationService.currentUserValue
+            currentUser: authenticationService.currentUserValue,
+            selectedDate: new Date()
             // users: null
         };
     }
 
-    componentDidMount() {
-        // userService.getAll().then(users => this.setState({ users }));
+    componentDidUpdate() {
         // get the users diary entry for the day
+        diaryEntryService.getDiaryEntry()
     }
 
     render() {
@@ -23,6 +24,8 @@ class HomePage extends React.Component {
             <div>
                 <h1>Hi {currentUser.firstName}!</h1>
                 <p>You're logged in with React & JWT!!</p>
+
+                <h3></h3>
                 {/* <h3>Users from secure api end point:</h3>
                 {users &&
                     <ul>

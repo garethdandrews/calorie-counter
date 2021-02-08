@@ -7,7 +7,6 @@ export function handleResponse(response) {
                 // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
                 authenticationService.logout();
             }
-            location.reload();
             return Promise.reject(text);
         } else {
             const data = text && JSON.parse(text);

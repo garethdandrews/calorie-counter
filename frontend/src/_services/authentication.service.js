@@ -18,7 +18,7 @@ function login(username, password) {
         method: 'POST',
         headers: new Headers({'content-type': 'application/json'}),
         body: JSON.stringify({
-            "Name":username,
+            "Username":username,
             "Password":password
         })
     };
@@ -58,7 +58,7 @@ function refreshToken() {
         })
     };
 
-    return fetch(`${config.apiUrl}/token/refresh`, requestOptions) //`${config.apiUrl}/login`
+    return fetch(`${config.apiUrl}/token/refresh`, requestOptions)
         .then(handleResponse)
         .then(updateUser)
         .catch(error => alert(error));
