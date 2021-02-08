@@ -31,6 +31,16 @@ services:
       - postgres
     networks:
       - postgres
+      
+  frontend-app:
+    container_name: frontend-app
+    build: frontend
+    ports:
+      - 8082:8080
+    depends_on:
+      - backend-api
+    networks:
+      - postgres
 
 networks:
   postgres:
