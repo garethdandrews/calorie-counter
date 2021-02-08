@@ -14,6 +14,7 @@ class HomePage extends React.Component {
 
     componentDidMount() {
         // userService.getAll().then(users => this.setState({ users }));
+        // get the users diary entry for the day
     }
 
     render() {

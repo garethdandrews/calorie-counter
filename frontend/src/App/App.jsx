@@ -1,7 +1,7 @@
 import React from 'react';
 import { Router, Route, Link } from 'react-router-dom';
 
-import { history } from '@/_helpers';
+import { history, authHeader } from '@/_helpers';
 import { authenticationService } from '@/_services';
 import { PrivateRoute } from '@/_components';
 import { LoginPage } from '@/LoginPage';
