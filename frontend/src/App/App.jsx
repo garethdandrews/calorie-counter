@@ -5,6 +5,7 @@ import { history, authHeader } from '@/_helpers';
 import { authenticationService } from '@/_services';
 import { PrivateRoute } from '@/_components';
 import { LoginPage } from '@/LoginPage';
+import { RegisterPage } from '@/RegisterPage';
 import { HomePage } from '@/HomePage';
 
 class App extends React.Component {
@@ -20,9 +21,8 @@ class App extends React.Component {
         authenticationService.currentUser.subscribe(x => this.setState({ currentUser: x }));
     }
 
-    logout() {
-        authenticationService.logout();
-        history.push('/login');
+    register() {
+        history.push('/register');
     }
 
     render() {
@@ -40,6 +40,11 @@ class App extends React.Component {
                             <a onClick={this.logout} className="nav-item nav-link">Logout</a>
                             </div>
                         }
+                        {!currentUser &&
+                            <div className="navbar-nav ml-auto">
+                            <a onClick={this.register} className="nav-item nav-link">Register</a>
+                            </div>
+                        }
                     </nav>
                     <div className="jumbotron">
                         <div className="container">
@@ -47,6 +52,7 @@ class App extends React.Component {
                                 <div className="col-md-6 offset-md-3">
                                     <PrivateRoute exact path="/" component={HomePage} />
                                     <Route path="/login" component={LoginPage} />
+                                    <Route path="/register" component={RegisterPage} />
                                 </div>
                             </div>
                         </div>
