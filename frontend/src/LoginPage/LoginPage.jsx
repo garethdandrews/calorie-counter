@@ -65,6 +65,7 @@ class LoginPage extends React.Component {
                         </Form>
                     )}
                 />
+                
             </div>
         )
     }

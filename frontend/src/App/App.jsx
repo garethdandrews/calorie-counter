@@ -36,12 +36,18 @@ class App extends React.Component {
                         </div>
 
                         {currentUser &&
-                            <div className="navbar-nav ml-auto">
+                            <div className="navbar-nav mr-auto">
+                                <a className="nav-item nav-link" onClick={() => alert("Here you could change the calorie target")}>{currentUser.username}</a>
+                            </div>
+                        }
+
+                        {currentUser &&
+                            <div className="navbar-nav mr-auto">
                             <a onClick={this.logout} className="nav-item nav-link">Logout</a>
                             </div>
                         }
                         {!currentUser &&
-                            <div className="navbar-nav ml-auto">
+                            <div className="navbar-nav mr-auto">
                             <a onClick={this.register} className="nav-item nav-link">Register</a>
                             </div>
                         }
