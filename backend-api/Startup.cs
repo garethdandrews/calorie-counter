@@ -1,5 +1,6 @@
 
 using System;
+using System.Linq;
 using AutoMapper;
 using backend_api.Domain.Repositories;
 using backend_api.Domain.Security.Hashing;
@@ -97,6 +98,16 @@ namespace backend_api
                     .AllowAnyOrigin()
                     .AllowAnyMethod()
                     .AllowAnyHeader());
+
+            var serviceScopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
+            using (var serviceScope = serviceScopeFactory.CreateScope())
+            {
+                var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                if (dbContext.Database.GetPendingMigrations().Any())
+                {
+                    dbContext.Database.Migrate();
+                }
+            }
 
             app.UseHttpsRedirection();
 
