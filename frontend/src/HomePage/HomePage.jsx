@@ -9,32 +9,38 @@ class HomePage extends React.Component {
 
         this.state = {
             currentUser: authenticationService.currentUserValue,
-            selectedDate: new Date()
-            // users: null
+            selectedDate: null,
+            diaryEntry: null
         };
     }
 
     componentDidMount() {
+        var selectedDate = new Date();
+        this.setState({ selectedDate })
         // get the users diary entry for the day
-        diaryEntryService.getDiaryEntry(selectedDate)
+        diaryEntryService.getDiaryEntry(selectedDate).then(diaryEntry => this.setState({ diaryEntry }));
     }
 
     render() {
-        const { currentUser, users } = this.state;
+        const { currentUser, selectedDate, diaryEntry } = this.state;
         return (
             <div>
-                <h1>Hi {currentUser.firstName}!</h1>
-                <p>You're logged in with React & JWT!!</p>
-
                 <h3>{formatDate(selectedDate)}</h3>
-                {/* <h3>Users from secure api end point:</h3>
-                {users &&
-                    <ul>
-                        {users.map(user =>
-                            <li key={user.id}>{user.firstName} {user.lastName}</li>
-                        )}
-                    </ul>
-                } */}
+                {diaryEntry &&
+                    <div>
+                        <h5>
+                            Total Calories: {diaryEntry.totalCalories}
+                        </h5>
+                        {diaryEntry.foodItems &&
+                            <ul>
+                                {diaryEntry.foodItems.map((item, index) =>
+                                    <li key={index}>{item.name}: {item.calories}kcal</li>    
+                                )}
+                            </ul>
+                        }
+                    </div>
+                }
+                
             </div>
         );
     }
