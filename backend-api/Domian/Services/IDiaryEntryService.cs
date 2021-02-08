@@ -15,25 +15,25 @@ namespace backend_api.Domain.Services
         /// <summary>
         /// Validates and converts stringDate to DateTime to call the GetDiaryEntryAsync(int userId, DateTime date) method
         /// </summary>
-        /// <param name="userId"></param>
+        /// <param name="username"></param>
         /// <param name="stringDate"></param>
         /// <returns>
         /// Unsuccessful DiaryEntryResponse if the stringDate is not in the format dd-mm-yyyy;
         /// A call to the GetDiaryEntry method with the converted date object
         /// </returns>
-        Task<DiaryEntryResponse> GetDiaryEntryAsync(int userId, string stringDate);
+        Task<DiaryEntryResponse> GetDiaryEntryAsync(string username, string stringDate);
 
         /// <summary>
         /// Gets the users diary entry for a given date
         /// </summary>
-        /// <param name="userId"></param>
+        /// <param name="username"></param>
         /// <param name="date"></param>
         /// <returns>
         /// Unsuccessful DiaryEntryReponse if the user does not exist;
         /// Unsuccessful DiaryEntryResponse if the user does not have a diary entry for that date;
         /// Successful DiaryEntryResponse with the diary entry
         /// </returns>
-        Task<DiaryEntryResponse> GetDiaryEntryAsync(int userId, DateTime date);
+        Task<DiaryEntryResponse> GetDiaryEntryAsync(string username, DateTime date);
 
         /// <summary>
         /// Gets the users diary entry for a given date

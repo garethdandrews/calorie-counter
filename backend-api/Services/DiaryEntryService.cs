@@ -36,15 +36,15 @@ namespace backend_api.Services
         /// <summary>
         /// Validates and converts stringDate to DateTime to call the GetDiaryEntryAsync(int userId, DateTime date) method
         /// </summary>
-        /// <param name="userId"></param>
+        /// <param name="username"></param>
         /// <param name="stringDate"></param>
         /// <returns>
         /// Unsuccessful DiaryEntryResponse if the stringDate is not in the format dd-mm-yyyy;
         /// A call to the GetDiaryEntry method with the converted date object
         /// </returns>
-        public async Task<DiaryEntryResponse> GetDiaryEntryAsync(int userId, string stringDate)
+        public async Task<DiaryEntryResponse> GetDiaryEntryAsync(string username, string stringDate)
         {
-            // conver the string date to a DateTime object
+            // convert the string date to a DateTime object
             DateTime date;
             try
             {
@@ -56,27 +56,27 @@ namespace backend_api.Services
             }
 
             // call the GetDiaryEntryAsync method with the new date object
-            return await GetDiaryEntryAsync(userId, date);
+            return await GetDiaryEntryAsync(username, date);
         }
 
         /// <summary>
         /// Gets the users diary entry for a given date
         /// </summary>
-        /// <param name="userId"></param>
+        /// <param name="username"></param>
         /// <param name="date"></param>
         /// <returns>
         /// Unsuccessful DiaryEntryReponse if the user does not exist;
         /// Unsuccessful DiaryEntryResponse if the user does not have a diary entry for that date;
         /// Successful DiaryEntryResponse with the diary entry
         /// </returns>
-        public async Task<DiaryEntryResponse> GetDiaryEntryAsync(int userId, DateTime date)
+        public async Task<DiaryEntryResponse> GetDiaryEntryAsync(string username, DateTime date)
         {
             // validate userId
-            var userResult = await _userService.GetUserAync(userId);
+            var userResult = await _userService.GetUserByNameAsync(username);
             if (!userResult.Success)
                 return new DiaryEntryResponse(userResult.Message);
 
-            var diaryEntryResult = await GetUsersDiaryEntryForDateAsync(userId, date);
+            var diaryEntryResult = await GetUsersDiaryEntryForDateAsync(userResult.User.Id, date);
             if (!diaryEntryResult.Success)
                 return diaryEntryResult;
 

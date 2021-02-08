@@ -34,21 +34,21 @@ namespace backend_api.Controllers
         /// <summary>
         /// Gets the diary entry for a given user ID and date
         /// </summary>
-        /// <param name="userId"></param>
+        /// <param name="username"></param>
         /// <param name="stringDate">must be in the format dd-mm-yyyy</param>
         /// <returns>
         /// bad request if parameters are invalid;
         /// bad request if there was an issue retreiving the diary entry;
         /// success response with the diary entry
         /// </returns>
-        [HttpGet("{userId}/{stringDate}")]
+        [HttpGet("{username}/{stringDate}")]
         [Authorize]
-        public async Task<IActionResult> GetAsync(int userId, string stringDate)
+        public async Task<IActionResult> GetAsync(string username, string stringDate)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState.GetErrorMessages());
 
-            var result = await _diaryEntryService.GetDiaryEntryAsync(userId, stringDate);
+            var result = await _diaryEntryService.GetDiaryEntryAsync(username, stringDate);
             
             if (!result.Success)
                 return BadRequest(result.Message);
