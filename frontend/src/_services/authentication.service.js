@@ -14,47 +14,51 @@ export const authenticationService = {
 };
 
 function login(username, password) {
-    var myHeaders = new Headers();
-    myHeaders.append('content-type', 'application/json');
-
-    var raw = JSON.stringify({"Name":username,"Password":password});
-
     const requestOptions = {
         method: 'POST',
-        headers: myHeaders,
-        body: raw
+        headers: new Headers({'content-type': 'application/json'}),
+        body: JSON.stringify({
+            "Name":username,
+            "Password":password
+        })
     };
 
-    return fetch(`${config.apiUrl}/login`, requestOptions) //`${config.apiUrl}/login`
+    return fetch(`${config.apiUrl}/login`, requestOptions) 
         .then(handleResponse)
         .then(updateUser)
         .catch(error => alert(error));
 }
 
 function logout() {
-    var myHeaders = new Headers();
-    myHeaders.append('content-type', 'application/json');
+    const requestOptions = {
+        method: 'POST',
+        headers: new Headers({'content-type': 'application/json'}),
+        body: JSON.stringify({
+            "Token": currentUserSubject.value.refreshToken
+        })
+    };
 
-    var raw = JSON.stringify({"Token": ""})
-
-    // remove user from local storage to log user out
-    localStorage.removeItem('currentUser');
-    currentUserSubject.next(null);
+    return fetch(`${config.apiUrl}/login/token/revoke`, requestOptions)
+        .then(handleResponse)
+        .then(() => {
+            // remove user from local storage to log user out
+            localStorage.removeItem('currentUser');
+            currentUserSubject.next(null);
+        })
+        .catch(error => alert(error));
 }
 
 function refreshToken() {
-    var myHeaders = new Headers();
-    myHeaders.append('content-type', 'application/json');
-
-    var raw = JSON.stringify({"Token":currentUser.refreshToken,"Name":currentUser.name});
-
     const requestOptions = {
         method: 'POST',
-        headers: myHeaders,
-        body: raw
+        headers: new Headers({'content-type': 'application/json'}),
+        body: JSON.stringify({
+            "Token":currentUserSubject.value.refreshToken,
+            "Name":currentUserSubject.value.name
+        })
     };
 
-    return fetch('http://localhost:8080/api/login/token/refresh', requestOptions) //`${config.apiUrl}/login`
+    return fetch(`${config.apiUrl}/token/refresh`, requestOptions) //`${config.apiUrl}/login`
         .then(handleResponse)
         .then(updateUser)
         .catch(error => alert(error));
