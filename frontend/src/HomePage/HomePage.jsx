@@ -13,6 +13,8 @@ class HomePage extends React.Component {
             diaryEntry: null,
             calorieTarget: null
         };
+
+        this.add = this.add.bind(this);
     }
 
     componentDidMount() {
@@ -33,10 +35,12 @@ class HomePage extends React.Component {
         this.updateDiaryEntry(newDate);
     }
 
-    
-
     delete(id) {
         foodItemService.deleteFoodItem(id);
+        this.updateDiaryEntry(this.state.selectedDate);
+    }
+
+    add() {
         this.updateDiaryEntry(this.state.selectedDate);
     }
 
@@ -80,7 +84,7 @@ class HomePage extends React.Component {
                     </div>
                 }
                 <hr />
-                <AddForm formattedDate={formattedDate} updateDiaryEntry={this.updateDiaryEntry} />
+                <AddForm formattedDate={formattedDate} add={this.add} />
             </div>
         );
     }

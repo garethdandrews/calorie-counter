@@ -1,6 +1,6 @@
 import config from 'config';
 import { authenticationService } from '@/_services';
-import { authHeader, formatDate, handleResponse } from '@/_helpers';
+import { authHeader, handleResponse } from '@/_helpers';
 
 export const diaryEntryService = {
     getDiaryEntry

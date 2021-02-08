@@ -9,11 +9,6 @@ class AddForm extends React.Component {
         super(props);
     }
 
-    updateDiaryEntry() {
-        this.props.updateDiaryEntry();
-    }
-
-
     render() {
         return(
             <div>
@@ -27,12 +22,13 @@ class AddForm extends React.Component {
                         name: Yup.string().required('Name is required'),
                         calories: Yup.number().required('Calories is required')
                     })}
-                    onSubmit={({ name, calories }, { setStatus, setSubmitting }) => {
-                        setStatus();
-                        foodItemService.addFoodItem(name, calories, this.props.formattedDate)
-                            .then(() =>
-                                this.updateDiaryEntry
-                            );
+                    onSubmit={({ name, calories }, { setSubmitting }) => {
+                        setTimeout(() =>{
+                            foodItemService.addFoodItem(name, calories, this.props.formattedDate)
+                                .then(this.props.add);
+                            setSubmitting(false);
+                        }, 500);
+                        
                     }}
                     render={({ errors, status, touched, isSubmitting }) => (
                         <Form>
