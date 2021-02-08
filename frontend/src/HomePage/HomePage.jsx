@@ -1,7 +1,7 @@
 import React from 'react';
-
 import { formatDate } from '@/_helpers';
-import { diaryEntryService, authenticationService } from '@/_services';
+import { authenticationService, diaryEntryService, foodItemService, userService } from '@/_services';
+import { AddForm } from '@/HomePage';
 
 class HomePage extends React.Component {
     constructor(props) {
@@ -9,37 +9,78 @@ class HomePage extends React.Component {
 
         this.state = {
             currentUser: authenticationService.currentUserValue,
-            selectedDate: null,
-            diaryEntry: null
+            selectedDate: new Date(),
+            diaryEntry: null,
+            calorieTarget: null
         };
     }
 
     componentDidMount() {
-        var selectedDate = new Date();
-        this.setState({ selectedDate })
         // get the users diary entry for the day
-        diaryEntryService.getDiaryEntry(selectedDate).then(diaryEntry => this.setState({ diaryEntry }));
+        this.updateDiaryEntry(this.state.selectedDate);
+        userService.getUser().then(user => this.setState({ calorieTarget: user.calorieTarget }));
+    }
+
+    back() {
+        var newDate = new Date();
+        newDate.setDate(this.state.selectedDate.getDate() - 1);
+        this.updateDiaryEntry(newDate);
+    }
+
+    forward() {
+        var newDate = new Date();
+        newDate.setDate(this.state.selectedDate.getDate() + 1);
+        this.updateDiaryEntry(newDate);
+    }
+
+    
+
+    delete(id) {
+        foodItemService.deleteFoodItem(id);
+        this.updateDiaryEntry(this.state.selectedDate);
+    }
+
+    updateDiaryEntry(date) {
+        this.setState({ selectedDate: date });
+        diaryEntryService.getDiaryEntry(formatDate(date)).then(diaryEntry => this.setState({ diaryEntry }));
     }
 
     render() {
-        const { selectedDate, diaryEntry } = this.state;
+        const { selectedDate, diaryEntry, calorieTarget } = this.state;
+        const formattedDate = formatDate(selectedDate);
         return (
             <div>
-                <h3>{formatDate(selectedDate)}</h3>
+                <h1>{formattedDate}</h1>
+                <h6><a onClick={() => this.back()}>Back</a></h6>
+                <h6><a onClick={() => this.forward()}>Forward</a></h6>
+                <hr />
                 {diaryEntry &&
                     <div>
-                        <h5>
+                        <h4>
                             Total Calories: {diaryEntry.totalCalories}
-                        </h5>
+                        </h4>
+                        <h4>
+                            Target: {calorieTarget}
+                        </h4>
+                        <hr />
                         {diaryEntry.foodItems &&
-                            <ul>
+                            <div>
                                 {diaryEntry.foodItems.map((item, index) =>
-                                    <li key={index}>{item.name}: {item.calories}kcal</li>    
+                                    <div key={index}>
+                                        <h4>{item.name}</h4>
+                                        <h6>{item.calories}kcal</h6>
+                                        <a onClick={() => this.delete(item.id)} className="">Delete</a>
+                                    </div>
+
                                 )}
-                            </ul>
+                                
+                            </div>
                         }
+
                     </div>
                 }
+                <hr />
+                <AddForm formattedDate={formattedDate} updateDiaryEntry={this.updateDiaryEntry} />
             </div>
         );
     }

@@ -1,12 +1,12 @@
 import config from 'config';
 import { authenticationService } from '@/_services';
-import { authHeader, formatDate, handleResponse } from '@/_helpers';
+import { authHeader, handleResponse } from '@/_helpers';
 
-export const diaryEntryService = {
-    getDiaryEntry
+export const userService = {
+    getUser
 };
 
-function getDiaryEntry(date) {
+function getUser() {
     // authenticationService.refreshTokenIfInvalid();
 
     const requestOptions = {
@@ -16,7 +16,7 @@ function getDiaryEntry(date) {
 
     const username = authenticationService.currentUserValue.username;
 
-    return fetch(`${config.apiUrl}/diaryentry/${username}/${date}`, requestOptions)
+    return fetch(`${config.apiUrl}/user/${username}`, requestOptions)
         .then(handleResponse)
         .catch(error => alert(error));
 }
