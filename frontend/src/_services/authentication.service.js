@@ -13,7 +13,7 @@ export const authenticationService = {
 };
 
 function login(username, password) {
-    const myHeaders = new Headers();
+    var myHeaders = new Headers();
     myHeaders.append('content-type', 'application/json');
 
     var raw = JSON.stringify({"Name":username,"Password":password});
@@ -31,12 +31,20 @@ function login(username, password) {
             localStorage.setItem('currentUser', JSON.stringify(user));
             currentUserSubject.next(user);
 
-            console.log(user)
+            console.log(user);
+            console.log(user.refreshToken)
+
             return user;
-        });
+        })
+        .catch(error => alert(error));
 }
 
 function logout() {
+    var myHeaders = new Headers();
+    myHeaders.append('content-type', 'application/json');
+
+    var raw = JSON.stringify({"Token": ""})
+
     // remove user from local storage to log user out
     localStorage.removeItem('currentUser');
     currentUserSubject.next(null);
