@@ -2,6 +2,7 @@ import { BehaviorSubject } from 'rxjs';
 
 import config from 'config';
 import { handleResponse } from '@/_helpers';
+import { diaryEntryService } from '@/_services';
 
 const currentUserSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('currentUser')));
 
@@ -68,6 +69,7 @@ function refreshToken() {
     return fetch(`${config.apiUrl}/login/token/refresh`, requestOptions)
         .then(handleResponse)
         .then(user => updateUser(user))
+        .then()
         .catch(error => alert(error));
 }
 
@@ -75,10 +77,6 @@ function updateUser(user) {
     // store user details and jwt token in local storage to keep user logged in between page refreshes
     localStorage.setItem('currentUser', JSON.stringify(user));
     currentUserSubject.next(user);
-
-    console.log(user);
-    console.log(user.refreshToken)
-
     return user;
 }
 
@@ -87,19 +85,14 @@ function isAccessTokenValid(expiration) {
     var expirationDate = convertTicksToDate(expiration);
     var currentDate = new Date()
 
-    console.log("expiration, current");
-    console.log(expirationDate);
-    console.log(currentDate);
-
     // calculate the time difference in seconds
     var timeDifference = (expirationDate - currentDate)/1000;
 
-    console.log("time difference");
-    console.log(timeDifference);
+    console.log(`Time until access token expires: ${timeDifference}`);
 
     // token is invalid if the expiration date/time is in the past
     // or if there are only 5 seconds until the token expires
-    if (timeDifference <= 0 || timeDifference < 5) {
+    if (timeDifference < 10) {
         return false;
     }
 

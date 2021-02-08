@@ -66,3 +66,5 @@ class AddForm extends React.Component {
         );
     }
 }
+
+export { AddForm };

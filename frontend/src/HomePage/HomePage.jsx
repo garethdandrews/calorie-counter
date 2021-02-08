@@ -22,7 +22,7 @@ class HomePage extends React.Component {
     }
 
     render() {
-        const { currentUser, selectedDate, diaryEntry } = this.state;
+        const { selectedDate, diaryEntry } = this.state;
         return (
             <div>
                 <h3>{formatDate(selectedDate)}</h3>
@@ -40,7 +40,6 @@ class HomePage extends React.Component {
                         }
                     </div>
                 }
-                
             </div>
         );
     }

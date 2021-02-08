@@ -7,6 +7,8 @@ export const diaryEntryService = {
 };
 
 function getDiaryEntry(date) {
+    // authenticationService.refreshTokenIfInvalid();
+
     const requestOptions = {
         method: 'GET',
         headers: authHeader()
@@ -14,8 +16,6 @@ function getDiaryEntry(date) {
 
     const username = authenticationService.currentUserValue.username;
     const stringDate = formatDate(date)
-
-    authenticationService.refreshTokenIfInvalid();
 
     return fetch(`${config.apiUrl}/diaryentry/${username}/${stringDate}`, requestOptions)
         .then(handleResponse)
