@@ -69,9 +69,6 @@ namespace backend_api.Services
                 return new FoodItemResponse(e.Message);
             }
 
-            if (date.Date >= DateTime.Now.AddDays(1))
-                return new FoodItemResponse("Can't add a food item in the future");
-
             DiaryEntry diaryEntry;
 
             // check if user has a diary entry for the day
