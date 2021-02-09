@@ -54,28 +54,38 @@ class HomePage extends React.Component {
         const formattedDate = formatDate(selectedDate);
         return (
             <div>
-                <h1>{formattedDate}</h1>
-                <h6><a onClick={() => this.back()}>Back</a></h6>
-                <h6><a onClick={() => this.forward()}>Forward</a></h6>
+                <h1 className="text-center">{formattedDate}</h1>
+                <div className="row">
+                	<div className="col-md-6">
+                		<button type="button" className="btn btn-primary" onClick={() => this.back()}>Prev</button>
+                	</div>
+                	<div className="col-md-6 text-right">
+                	<button type="button" className="btn btn-primary" onClick={() => this.forward()}>Next</button>		</div>
+                </div>
                 <hr />
                 {diaryEntry &&
                     <div>
                         <h4>
-                            Total Calories: {diaryEntry.totalCalories}
+                            Calories: {diaryEntry.totalCalories}
                         </h4>
-                        <h4>
+                        <h5 className="text-right">
                             Target: {calorieTarget}
-                        </h4>
+                        </h5>
                         <hr />
+                        
                         {diaryEntry.foodItems &&
                             <div>
                                 {diaryEntry.foodItems.map((item, index) =>
-                                    <div key={index}>
-                                        <h4>{item.name}</h4>
-                                        <h6>{item.calories}kcal</h6>
-                                        <a onClick={() => this.delete(item.id)} className="">Delete</a>
+                                <div key={index} >
+                                    <div className="row border p-3">
+                                        <h4 className="col-md-6">{item.name}</h4>
+                                        <h6 className="col-md-6 text-right">{item.calories}kcal</h6>
+                                        <div className="col-md-12 text-right" >
+                                        	<button type="button" className="btn btn-outline-danger btn-sm" onClick={() => this.delete(item.id)}>Delete</button>
+                                        </div>
                                     </div>
-
+                                    <br />
+				</div>
                                 )}
                                 
                             </div>

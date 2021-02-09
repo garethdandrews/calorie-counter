@@ -12,7 +12,7 @@ class AddForm extends React.Component {
     render() {
         return(
             <div>
-                <h5>Add Item</h5>
+                <h4 className="text-center">Add Item</h4>
                 <Formik
                     initialValues={{
                         name: '',
