@@ -29,7 +29,7 @@ function addFoodItem(name, calories, date) {
         .catch(error => alert(error));
 }
 
-function deleteFoodItem(id) {
+async function deleteFoodItem(id) {
     var myHeaders = new Headers();
     myHeaders.append("Authorization", authHeader());
     myHeaders.append("Content-Type", "application/json");
@@ -39,7 +39,9 @@ function deleteFoodItem(id) {
         headers: myHeaders
     };
 
-    return fetch(`${config.apiUrl}/fooditem/${id}`, requestOptions)
+    console.log(`${id}`);
+
+    return await fetch(`${config.apiUrl}/fooditem/${id}`, requestOptions)
         .then(handleResponse)
         .catch(error => alert(error));
 }

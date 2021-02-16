@@ -21,6 +21,11 @@ class App extends React.Component {
         authenticationService.currentUser.subscribe(x => this.setState({ currentUser: x }));
     }
 
+    logout() {
+        authenticationService.logout();
+        history.push('/login');
+    }
+
     register() {
         history.push('/register');
     }
